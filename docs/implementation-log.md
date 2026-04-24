@@ -289,6 +289,38 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 - Spec compliance: ✅ com pequeno desvio necessário (alias vitest)
 - Code quality: ✅ (queries são declarativas, cobertura de tests OK)
 
+### Task 15 — Post detail page ✅
+
+**Commit:** `d13885f feat(posts): add post detail page with MDX and comment stub`
+
+**O que foi feito:**
+- `components/ui/PostComments.tsx` — stub que retorna `null` (ativa na v0.2 com Giscus).
+- `components/ui/TagPill.tsx` — pill de tag com `<Link>` pra `/${lang}/posts/tags/<tag>` + hover border accent.
+- `app/[lang]/posts/[slug]/page.tsx` — página de leitura com header (Plex Serif, data localizada, reading time, tags) + `<MDXContent code={post.body} />` em `div.prose-content` + footer com PostComments stub.
+- `globals.css` — estilos `.prose-content` para renderização de posts (h2/h3 em serif, p com margem, ul/ol, blockquote com border-left accent).
+
+**Verificação:** `pnpm build` → `/pt/posts/exemplo` prerendered (fixture da Task 14). Route table mostra `/[lang]/posts/[slug]`.
+
+**Reviews:** verbatim do plan.
+
+### Task 16 — Posts index ✅
+
+**Commit:** `fa030b6 feat(posts): add posts index page`
+
+**O que foi feito:**
+- `components/ui/PostCard.tsx` — card com data localizada (short month), título em Plex Serif que vira accent no hover, description em muted, tags em TagPills.
+- `app/[lang]/posts/page.tsx` — índice listando posts publicados pela lang; empty state quando não há posts.
+
+**Verificação:** `pnpm build` → `/pt/posts` (com fixture listada) e `/en/posts` (empty state em inglês) prerendered.
+
+**Reviews:** verbatim do plan.
+
+---
+
+### Task 17 — Escrever 1º post real (TCC status) ⏸
+
+**Bloqueado esperando conteúdo do autor** — conteúdo autêntico sobre TCC só pode vir de você.
+
 
 
 
