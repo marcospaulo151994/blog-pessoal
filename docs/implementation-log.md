@@ -220,6 +220,26 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 - Spec compliance: ✅ com deprecation flag (aceita, será corrigido em Task 11)
 - Code quality: N/A (config mínima)
 
+### Task 11 — Schemas Post/Projeto/Nota ✅
+
+**Commit:** a confirmar no próximo `git log` (foi `feat(content): define Post/Projeto/Nota schemas with MDX pipeline`)
+
+**O que foi feito:**
+- `content-collections.ts` totalmente reescrito com 3 schemas Zod (Post, Projeto, Nota) + MDX compile transform com `rehype-pretty-code` (themes `github-dark-dimmed` + `github-light`) e `remark-gfm`.
+- Instaladas deps regulares: `rehype-pretty-code@0.14.3`, `shiki@4.0.2`, `remark-gfm@4.0.1`, e `zod@4.3.6` (ver desvio abaixo).
+
+**Desvios do plano (API content-collections 0.15 mudou mais do que antecipado):**
+- `collections:` → `content:` em `defineConfig` (já sabíamos).
+- `schema: (z) => ({...})` (form de função) **também foi retirado**. Nova API: `schema: z.object({...})` com zod importado explicitamente pelo consumidor.
+- Por isso `zod@4.3.6` teve que entrar como dep direta — a versão transitiva dentro de `@content-collections/core` não é resolvível no modo strict do pnpm.
+- Anotação `MdxOptions` (re-export de `Options` do `@content-collections/mdx`) adicionada em `mdxOptions` pra satisfazer TS strict.
+
+**Verificação:** `pnpm build` → `finished build of 3 collections and 0 documents in 6ms`. Zero warnings. TypeScript verde.
+
+**Reviews:**
+- Spec compliance: ✅ com desvios de API (todos documentados e forçados pela versão atual do pkg)
+- Code quality: N/A (config declarativa)
+
 
 
 
