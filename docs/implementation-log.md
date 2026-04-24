@@ -360,6 +360,27 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 
 **Critério de pronto (§7 Fase 1 do plan):** ✅ 1 post real escrito e renderizado em `/pt/posts/<slug>` com tipografia Plex e syntax highlight funcional.
 
+## Fase 2 — Portfólio e garden
+
+_Iniciada pós-Fase 1. Ordem adaptada: Task 20 executada primeiro (puro código, sem conteúdo necessário); Tasks 18-19 aguardam input do autor._
+
+### Task 20 — Tag filter page ✅
+
+**Commit:** `78f725c feat(posts): add tag filter page`
+
+**O que foi feito:**
+- `app/[lang]/posts/tags/[tag]/page.tsx` — página de filtro com `generateStaticParams` expandindo os tags de cada post publicado.
+
+**Verificação:** `pnpm build` → 4 rotas prerendered:
+- `/pt/posts/tags/mediapipe`
+- `/pt/posts/tags/pose-estimation`
+- `/pt/posts/tags/python`
+- `/pt/posts/tags/visao-computacional`
+
+Zero rotas en (não há posts en ainda). Clicar em qualquer TagPill do post MediaPipe agora funciona.
+
+**Reviews:** verbatim do plan.
+
 
 
 
