@@ -569,15 +569,15 @@ Features adiadas recebem **hooks arquiteturais na v0.1** para serem drop-in depo
 
 ### Tabela de hooks (implementar na v0.1)
 
-| Feature adiada | Hook na v0.1 | Esforço hook |
-|---|---|---|
-| Comentários (Giscus) | `<PostComments postId={...} />` stub (retorna `null`) no final de `/posts/[slug]` | 15min |
-| Newsletter | `<NewsletterCta />` stub no footer dos posts e `/sobre` | 10min |
-| Tradução automática | Schema já aceita `.pt.mdx`/`.en.mdx` com mesmo `translationKey`; adicionar script depois não muda nada | 0min |
-| Semantic search | `lib/search.ts` expõe `searchContent()` como interface; MiniSearch é impl; trocar por embeddings depois muda só o corpo | 15min (interface) |
-| Code playground | `<CodePlayground />` registrado como MDX component com fallback `<pre>` estático | 20min |
-| Scroll reveals | `<Reveal type="fade">` como no-op (renderiza só `children`); na v0.3, adiciona Framer Motion | 15min |
-| Traduções en dos posts legados | Não precisa de hook — só escrever o `.en.mdx` quando quiser | 0min |
+| Feature adiada | Hook na v0.1 | Esforço hook | Fase (§7) |
+|---|---|---|---|
+| Comentários (Giscus) | `<PostComments postId={...} />` stub (retorna `null`) no final de `/posts/[slug]` | 15min | Fase 1 (junto com layout do post) |
+| Newsletter | `<NewsletterCta />` stub no footer dos posts e `/sobre` | 10min | Fase 3 (montagem do footer) |
+| Tradução automática | Schema já aceita `.pt.mdx`/`.en.mdx` com mesmo `translationKey`; adicionar script depois não muda nada | 0min | — (coberto pelo schema da Fase 1) |
+| Semantic search | `lib/search.ts` expõe `searchContent()` como interface; MiniSearch é impl; trocar por embeddings depois muda só o corpo | 15min (interface) | Fase 3 (junto com SearchDialog) |
+| Code playground | `<CodePlayground />` registrado como MDX component com fallback `<pre>` estático | 20min | Fase 1 (junto com outros MDX components) |
+| Scroll reveals | `<Reveal type="fade">` como no-op (renderiza só `children`); na v0.3, adiciona Framer Motion | 15min | Fase 4 (junto com Framer Motion) |
+| Traduções en dos posts legados | Não precisa de hook — só escrever o `.en.mdx` quando quiser | 0min | — |
 
 ### Tracking público
 
