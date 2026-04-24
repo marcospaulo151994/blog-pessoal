@@ -124,3 +124,17 @@ _Em execução a partir de 2026-04-24._
 
 **Nota:** `/theme-init.js` ainda não existe — referência vai 404 no dev até Task 7, não quebra build.
 
+### Task 6 — LanguageSwitcher ✅
+
+**Commit:** `36d6e07 feat(layout): add LanguageSwitcher component`
+
+**O que foi feito:**
+- Criado `components/layout/LanguageSwitcher.tsx` (client component) — usa `usePathname`, `translatePath(pathname, currentLang, other)` pra gerar href da versão no outro idioma, seta cookie `NEXT_LANG=<other>` on-click pra persistir preferência do usuário.
+- CSS vars `var(--text-muted)` e `var(--accent)` referenciadas mas ainda não definidas — Task 7 vai definir.
+
+**Verificação:** `pnpm build` → 7 páginas estáticas (pt/en + sobre) geradas com sucesso.
+
+**Reviews:**
+- Spec compliance: ✅ verbatim do plan
+- Code quality: N/A (componente simples)
+
