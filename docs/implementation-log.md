@@ -102,3 +102,25 @@ _Em execução a partir de 2026-04-24._
 - Spec compliance: ✅ (verificação direta após subagent flagear deprecation)
 - Code quality: N/A (lógica pura verbatim, cobertura de testes 100%)
 
+### Task 5 — Rotas [lang]/ placeholders ✅
+
+**Commit:** `ab059b1 feat(app): add [lang] routes with home and sobre placeholders`
+
+**O que foi feito:**
+- Deletado `app/page.tsx` (default CNA).
+- Criados `app/[lang]/layout.tsx`, `app/[lang]/page.tsx`, `app/[lang]/sobre/page.tsx` (verbatim do plan).
+- `app/[lang]/layout.tsx` usa `generateStaticParams` pra gerar `{lang: 'pt'}` e `{lang: 'en'}` como static params + valida `isLocale(lang)` com `notFound()` como fallback.
+- Páginas usam pattern `params: Promise<{ lang: Locale }>` + `await params` (Next 16 async params).
+- `app/layout.tsx` reescrito: removido Geist fonts do CNA, metadata trocada pra "Marcos Medeiros", `<script src="/theme-init.js" />` no head (arquivo será criado na Task 7), `suppressHydrationWarning` no `<html>`.
+
+**Verificação:** `pnpm build` → tabela de rotas mostra:
+- `● /[lang]` → prerendered `/pt`, `/en`
+- `● /[lang]/sobre` → prerendered `/pt/sobre`, `/en/sobre`
+- `ƒ Proxy (Middleware)` ativo
+
+**Reviews:**
+- Spec compliance: ✅ verificação direta (git show + build output)
+- Code quality: N/A (placeholders sem lógica custom)
+
+**Nota:** `/theme-init.js` ainda não existe — referência vai 404 no dev até Task 7, não quebra build.
+
