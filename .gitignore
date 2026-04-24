@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# content-collections (generated)
+/.content-collections/
+
 # production
 /build
 
