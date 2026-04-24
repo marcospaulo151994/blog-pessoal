@@ -1,9 +1,9 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-serif: 'IBM Plex Serif', Georgia, serif;
-  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'Fira Code', monospace;
+  --font-serif: var(--font-serif-loaded), Georgia, serif;
+  --font-sans: var(--font-sans-loaded), system-ui, sans-serif;
+  --font-mono: var(--font-mono-loaded), 'Fira Code', monospace;
 }
 
 :root {
@@ -74,4 +74,20 @@ a:hover::after {
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
+}
+
+pre[data-theme] {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+pre[data-theme] code { background: none; padding: 0; }
+[data-highlighted-line] {
+  background: color-mix(in oklch, var(--accent) 15%, transparent);
+  display: inline-block;
+  width: 100%;
 }
