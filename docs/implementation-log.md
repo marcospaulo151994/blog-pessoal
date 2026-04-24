@@ -40,3 +40,26 @@ _Em execução a partir de 2026-04-24._
 - Spec compliance: ✅ com deviation aceita (Next 16)
 - Code quality: ✅ ship it
 
+### Task 2 — ESLint + Prettier + Vitest ✅
+
+**Commit:** `7ec5fde chore: configure eslint, prettier, and vitest`
+
+**O que foi feito:**
+- Instaladas devDeps: `eslint@9`, `eslint-config-next@16.2.4`, `eslint-config-prettier@10`, `prettier@3`, `vitest@4`, `@vitest/ui`, `@testing-library/react`, `@testing-library/jest-dom`, `jsdom`, `@vitejs/plugin-react`.
+- Criados: `eslint.config.mjs`, `.prettierrc.json`, `vitest.config.ts`, `tests/setup.ts`.
+- `package.json` scripts: `dev, build, start, lint, format, test, test:run, test:ui`.
+
+**Adaptações inteligentes do subagent (não bugs):**
+- Usou o padrão flat-config oficial do Next 16 (`eslint-config-next/core-web-vitals` + `/typescript` + `eslint-config-prettier/flat` + `defineConfig`/`globalIgnores` de `eslint/config`) ao invés do snippet literal do plan, que não funcionaria com o export map v16.
+- Não instalou `@eslint/js` e `typescript-eslint` como deps diretas (vêm transitivamente via `eslint-config-next`, não são importadas pelo config).
+- Manteve `"dev": "next dev"` (Next 16 usa Turbopack por default — `--turbopack` seria no-op).
+
+**Verificação:**
+- `pnpm lint` → exit 0 clean
+- `pnpm test:run` → "No test files found, exiting with code 1" (esperado, não é erro de config)
+- `pnpm dev` → output mostra "(Turbopack)"
+
+**Reviews:**
+- Spec compliance: ✅ com deviations aceitas (flat-config modernizada, scripts equivalentes)
+- Code quality: consolidado na spec review (task é só config — spec review já leu arquivos e validou runtime)
+
