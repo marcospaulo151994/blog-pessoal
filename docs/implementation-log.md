@@ -155,3 +155,12 @@ _Em execução a partir de 2026-04-24._
 - Spec compliance: ✅ verbatim do plan
 - Code quality: N/A (ThemeToggle tem lógica de estado simples, bem encapsulada; sem side-effects não previstos)
 
+### Task 8 — ROADMAP.md ✅
+
+**Commit:** a ser confirmado no próximo git show (foi `docs: add ROADMAP.md tracking deferred features`).
+
+**O que foi feito:**
+- `ROADMAP.md` na raiz do repo, com seções v0.1 (link pro plan atual), v0.2, v0.3, v0.4, v1.0+. Features adiadas checkbox-tracked, agrupadas por "tema" da versão.
+
+**Reviews:** task trivial (só texto), feita direto sem subagent.
+
