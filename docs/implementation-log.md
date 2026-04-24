@@ -194,4 +194,32 @@ _Em execução a partir de 2026-04-24._
 
 **Critério de pronto do plan (§7 Fase 0):** ✅ URL Vercel mostra /pt e /en, toggle de tema funciona (usuário confirmou via teste manual), switcher de idioma funciona.
 
+---
+
+## Fase 1 — Pipeline de conteúdo
+
+_Em execução a partir de 2026-04-24, pós-Fase 0._
+
+### Task 10 — Install content-collections ✅
+
+**Commit:** (a confirmar com git log após commit do log)
+
+**O que foi feito:**
+- Instaladas 3 devDeps: `@content-collections/core@0.15.0`, `@content-collections/mdx@0.2.2`, `@content-collections/next@0.2.11`.
+- `content-collections.ts` (root) com config mínima vazia.
+- `next.config.ts` envolvido em `withContentCollections`.
+- `tsconfig.json` path alias: `"content-collections": ["./.content-collections/generated"]` + `@/*` preservado.
+- `.gitignore` adicionou `/.content-collections/` (artefato gerado no build).
+
+**Desvio capturado para Task 11:**
+- `@content-collections/core@0.15.0` deprecou a propriedade `collections` em `defineConfig({ collections: [...] })` em favor de `content`. Task 11 (schemas) deve usar `content: [...]` na nova config, não `collections:`. Plan original usa `collections:` — adapt.
+
+**Verificação:** `pnpm build` green (1.5s), `finished build of 0 collections and 0 documents`. Warning de deprecação esperado até Task 11.
+
+**Reviews:**
+- Spec compliance: ✅ com deprecation flag (aceita, será corrigido em Task 11)
+- Code quality: N/A (config mínima)
+
+
+
 
