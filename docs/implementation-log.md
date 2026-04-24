@@ -240,6 +240,18 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 - Spec compliance: ✅ com desvios de API (todos documentados e forçados pela versão atual do pkg)
 - Code quality: N/A (config declarativa)
 
+### Task 12 — IBM Plex + code block styles ✅
+
+**Commit:** `5114488 feat(typography): load IBM Plex trio and style code blocks`
+
+**O que foi feito:**
+- `app/layout.tsx`: 3 imports `next/font/google` (Serif/Sans/Mono) com `display: swap`, weights e subsets `latin + latin-ext`, variáveis `--font-{serif,sans,mono}-loaded`. Aplicado `className` com as 3 vars no `<html>`. Metadata + theme-init script preservados.
+- `app/globals.css`: `@theme` block agora referencia `var(--font-X-loaded)` (do next/font) com fallback. Estilos de code block adicionados: `pre[data-theme]` (fundo var, padding, border-radius), `[data-highlighted-line]` com `color-mix(in oklch, var(--accent) 15%, transparent)`.
+
+**Verificação:** `pnpm build` → 7 páginas, fontes carregadas, TypeScript 1.8s, Turbopack 1.7s. Sem warnings.
+
+**Reviews:** verbatim do plan (sem adaptações).
+
 
 
 
