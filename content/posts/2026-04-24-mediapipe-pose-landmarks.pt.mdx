@@ -1,0 +1,116 @@
+---
+translationKey: "mediapipe-pose-landmarks"
+slug: "mediapipe-pose-landmarks"
+lang: "pt"
+title: "MediaPipe Pose: do que é feito um esqueleto de 33 pontos"
+description: "Como a lib do Google descobre onde estão seus cotovelos, por que isso virou o padrão pra pose estimation no CPU, e o que fazer com o vetor (x, y, z, visibility) de cada ponto."
+date: 2026-04-24
+tags: ["mediapipe", "visao-computacional", "pose-estimation", "python"]
+status: "published"
+---
+
+Pose estimation é o problema de, dado uma imagem ou vídeo de uma pessoa, descobrir onde estão os "pontos-chave" do corpo dela — pulsos, ombros, joelhos, tornozelos. Parece simples quando você olha de fora ("ué, é só desenhar um boneco palito"), mas envolve resolver dois problemas de uma vez: **achar** a pessoa no frame e **localizar** cada articulação com precisão sub-pixel, tudo isso rápido o suficiente pra rodar em vídeo.
+
+Nos últimos anos, esse problema saiu dos laboratórios de visão computacional e chegou em quase tudo que usa câmera: filtros do Instagram, contagem de agachamentos em apps de fitness, análise de técnica em esportes, acessibilidade pra pessoas com mobilidade reduzida. Entre as ferramentas disponíveis, uma se tornou o default prático: o **MediaPipe Pose**, do Google.
+
+## Como ele funciona por baixo
+
+O MediaPipe Pose usa por dentro uma arquitetura chamada **BlazePose**, publicada pelo Google em 2020. Ela roda em dois estágios:
+
+1. **Detector de pessoa.** Um modelo leve primeiro acha onde tem um corpo no frame (um bounding box). Esse passo só precisa rodar no primeiro frame ou quando perde o tracking — se a pessoa está estável, o estágio seguinte "segue" os landmarks diretamente.
+2. **Modelo de landmarks.** Recebe o recorte da pessoa e retorna 33 pontos no corpo, cada um com coordenadas `(x, y, z)` e uma `visibility` entre 0 e 1.
+
+Essa separação é o que dá a ele a vantagem de rodar em **tempo real no CPU**, até em celular. Outras abordagens fazem tudo num único passe pesado de rede — precisas, mas não tão rápidas.
+
+## Comparado com as alternativas
+
+As três famílias que disputam hoje o mesmo espaço:
+
+| Lib | Keypoints | Velocidade CPU | Licença | 3D aproximado |
+|---|---|---|---|---|
+| **MediaPipe Pose** | 33 | ~30 fps | Apache 2.0 | Sim (relativo aos quadris) |
+| **MoveNet** (Google/TFHub) | 17 (COCO) | ~40 fps | Apache 2.0 | Não |
+| **OpenPose** (CMU) | 25 | ~5-10 fps | Pesquisa (restritiva pra comercial) | Sim (se usar múltiplas câmeras) |
+
+Na prática:
+
+- **MediaPipe** ganha quando você quer **fácil de rodar** + **mais landmarks** (mãos, pés). Os 33 pontos incluem dedos principais e detalhes dos pés, o que o COCO-17 ignora.
+- **MoveNet** ganha quando você prioriza **velocidade bruta** ou mobile com TFLite.
+- **OpenPose** ainda é referência acadêmica, mas o setup é doloroso e a licença complica uso comercial.
+
+Pra quem está começando, **MediaPipe é o caminho menos traumático** — um `pip install mediapipe` e você está detectando poses em 10 linhas.
+
+## Os 33 landmarks
+
+Os pontos são indexados de 0 a 32, seguindo uma convenção do Google:
+
+- **Face (0-10):** nariz (0), olhos, orelhas, boca. Mais detalhe que o COCO padrão.
+- **Tronco (11, 12, 23, 24):** ombros e quadris. São os quatro pontos mais estáveis e mais usados pra derivar features.
+- **Braços (13-16):** cotovelos e pulsos.
+- **Mãos (17-22):** indicador, mindinho e polegar de cada lado. Cuidado: esses três são muito ruidosos, não são substitutos de uma lib de detecção de mão completa.
+- **Pernas (25-28):** joelhos e tornozelos.
+- **Pés (29-32):** calcanhar e ponta do pé.
+
+Cada um desses 33 pontos vem como uma tupla:
+
+- **`x`, `y`**: coordenadas normalizadas `[0, 1]` — `(0, 0)` é o canto superior esquerdo da imagem, `(1, 1)` o inferior direito. Pra converter pra pixels, multiplique pelo width/height.
+- **`z`**: profundidade aproximada, com origem nos quadris (entre landmarks 23 e 24). Escala arbitrária; útil pra comparar pontos entre si, não pra medida absoluta em metros.
+- **`visibility`**: confiança `[0, 1]` de que o ponto **está na imagem e não oclusado**. Filtrar por `visibility > 0.5` remove muito ruído em vídeos.
+
+## Código mínimo
+
+Meros 15 linhas pra processar um vídeo e imprimir a posição do ombro direito a cada frame:
+
+```python
+import cv2
+import mediapipe as mp
+
+mp_pose = mp.solutions.pose
+cap = cv2.VideoCapture("jogador.mp4")
+
+with mp_pose.Pose(min_detection_confidence=0.5) as pose:
+    while cap.isOpened():
+        ok, frame = cap.read()
+        if not ok:
+            break
+        result = pose.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        if result.pose_landmarks:
+            lm = result.pose_landmarks.landmark[mp_pose.PoseLandmark.RIGHT_SHOULDER]
+            print(f"ombro direito: x={lm.x:.3f} y={lm.y:.3f} vis={lm.visibility:.2f}")
+cap.release()
+```
+
+O `mp_pose.PoseLandmark` é um enum com nomes legíveis pros 33 índices (`NOSE`, `LEFT_WRIST`, `RIGHT_KNEE`, etc.) — vale mais usar do que decorar números.
+
+## O que fazer com esses pontos
+
+O vetor de landmarks é o insumo. O valor está em **derivar features dele**. Alguns padrões úteis:
+
+**Ângulos entre três pontos.** Dado `p1 → p2 → p3` (ex.: ombro, cotovelo, pulso), o ângulo no `p2` é uma feature geométrica robusta a translação e escala:
+
+```python
+import numpy as np
+
+def angle(p1, p2, p3):
+    a = np.array([p1.x - p2.x, p1.y - p2.y])
+    b = np.array([p3.x - p2.x, p3.y - p2.y])
+    cos = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+    return np.degrees(np.arccos(np.clip(cos, -1, 1)))
+```
+
+Isso vira coisas como "ângulo do cotovelo" ou "ângulo do joelho" — direto úteis pra análise de postura, técnica de exercício ou fases de um gesto.
+
+**Velocidade frame-a-frame.** Diferença entre posições de um mesmo landmark em frames consecutivos. Revela início, pico e fim de um movimento.
+
+**Simetria.** Comparar landmarks esquerdos e direitos (ex.: altura dos ombros) detecta desbalanços. Útil em análise biomecânica.
+
+**Sequências temporais.** Empilhar `T` frames em uma matriz `(T, 33, 3)` vira input pronto pra LSTM, CNN 1D ou Transformer.
+
+## Onde ir daqui
+
+- Docs oficiais: [mediapipe.dev](https://developers.google.com/mediapipe/solutions/vision/pose_landmarker)
+- Paper do BlazePose: [arxiv.org/abs/2006.10204](https://arxiv.org/abs/2006.10204)
+- Se quiser detectar **mãos em detalhe**, use `mediapipe.solutions.hands` em conjunto — 21 pontos por mão.
+- Pra aplicações 3D "de verdade", vale investigar [MediaPipe Holistic](https://developers.google.com/mediapipe/solutions/vision/holistic_landmarker) ou frameworks como OpenMMLab.
+
+O esqueleto é só o começo. O que diferencia uma aplicação de pose estimation boa de uma medíocre é como você transforma esses 33 pontos em informação semântica — ângulo, velocidade, padrão temporal, comparação com uma pose de referência. É aí que o problema fica interessante.

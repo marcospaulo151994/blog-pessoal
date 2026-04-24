@@ -19,8 +19,8 @@ describe('getPosts', () => {
 
 describe('getPostBySlug', () => {
   it('returns a post matching slug and lang', () => {
-    const post = getPostBySlug('exemplo', 'pt');
-    expect(post?.title).toBe('Post exemplo');
+    const post = getPostBySlug('mediapipe-pose-landmarks', 'pt');
+    expect(post?.title).toBe('MediaPipe Pose: do que é feito um esqueleto de 33 pontos');
   });
 
   it('returns null for unknown slug', () => {
