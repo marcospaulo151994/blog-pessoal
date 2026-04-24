@@ -317,9 +317,49 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 
 ---
 
-### Task 17 — Escrever 1º post real (TCC status) ⏸
+### Task 17 — Escrever 1º post real ✅
 
-**Bloqueado esperando conteúdo do autor** — conteúdo autêntico sobre TCC só pode vir de você.
+**Commit:** `3241a01 content: add first real post — MediaPipe Pose landmarks`
+
+**Pivot do plano:** plan original previa post sobre "Status do TCC". Autor pediu pra escrever sobre **MediaPipe + pose estimation** (mais acessível, melhor SEO, serve de fundação pra posts futuros sobre o TCC). Acesso ao TCC ficou implícito, não mencionado.
+
+**Post:** "MediaPipe Pose: do que é feito um esqueleto de 33 pontos" (~950 palavras pt-BR). Mistura de:
+- **(A)** introdução didática ao que é pose estimation e como o MediaPipe funciona por dentro (BlazePose, 2-stage pipeline)
+- **(B)** tabela comparativa MediaPipe vs MoveNet vs OpenPose (keypoints, fps, licença, 3D)
+- **(C)** anatomia dos 33 landmarks agrupados por parte do corpo + explicação do vetor `(x, y, z, visibility)`
+- Snippet Python `cv2 + mp_pose` de 15 linhas
+- Seção "O que fazer com esses pontos" com exemplos de feature engineering (ângulo entre 3 pontos, velocidade, simetria, sequências temporais pra LSTM/CNN)
+- Links pros docs oficiais e paper BlazePose
+
+**Tags:** `mediapipe`, `visao-computacional`, `pose-estimation`, `python`.
+
+**Rascunho aprovado pelo autor.**
+
+**Limpezas feitas no mesmo commit:**
+- Removido fixture `content/posts/2026-04-24-exemplo.pt.mdx` (não tem mais função).
+- `tests/content.test.ts` atualizado pra usar slug/title do novo post.
+
+**Verificação:**
+- `pnpm build` → "1 document" compilado, rota `/pt/posts/mediapipe-pose-landmarks` prerendered.
+- `pnpm test:run` → 17/17 passing (os 4 de content rodam contra o novo post).
+
+**Reviews:** aprovação do autor (review humano), build + tests verdes.
+
+---
+
+## Fase 1 — CONCLUÍDA ✅
+
+**Estatísticas finais:**
+- 8 tasks (10-17) concluídas em 1 sessão de execução
+- 17/17 tests passing
+- Pipeline MDX end-to-end funcionando: schema Zod → compile com rehype-pretty-code/remark-gfm → render via `<MDXContent>`
+- Primeiro post real publicado em `/pt/posts/mediapipe-pose-landmarks`
+- Rotas `/[lang]/posts` (índice) e `/[lang]/posts/[slug]` (detalhe) ativas
+- IBM Plex trio carregado via `next/font`
+- Paleta Peach Noir + dark mode integrados com prose-content
+
+**Critério de pronto (§7 Fase 1 do plan):** ✅ 1 post real escrito e renderizado em `/pt/posts/<slug>` com tipografia Plex e syntax highlight funcional.
+
 
 
 
