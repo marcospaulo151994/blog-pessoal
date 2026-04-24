@@ -11,6 +11,7 @@ Cada entrada captura: task, status (✅/⚠️/❌), resumo do que foi feito, de
 - **Next.js 16.2.4 no lugar de 15** — `pnpm dlx create-next-app@latest` resolve pra Next 16 (lançado recentemente). AGENTS.md auto-gerado alerta pra breaking changes vs Next 15. Aceito como deviation válida — plan originalmente mirava a versão mais recente. Tasks futuras que referenciam APIs específicas de Next 15 (dynamic params, generateMetadata, middleware edge runtime) devem re-validar contra Next 16 docs em `node_modules/next/dist/docs/` antes de implementar.
 - **Tailwind v4 é o default do create-next-app 16** — bate com a intenção do plan. Não é divergência, só atualização do que era comentário de v3 desatualizado.
 - **`middleware.ts` → `proxy.ts`** — Next 16 deprecou a convention `middleware.ts` em favor de `proxy.ts` (mesma funcionalidade, nome diferente + export renomeado de `middleware` → `proxy`). Fiz a migração imediatamente pra silenciar warning de deprecation e evitar tech debt. **Toda referência futura no plano a `middleware.ts` deve ler como `proxy.ts`**. Matcher config (`export const config = { matcher: ... }`) inalterado.
+- **GitHub username: `marcospaulo151994`** (não `marcos-medeiros`, que era placeholder no plan). Todas as URLs `github.com/marcos-medeiros/...` no plan (Task 18 links do projeto TCC, Task 24 Footer, Task 33 README) devem ser `github.com/marcospaulo151994/...`. Task 18 (projeto TCC): usar `marcospaulo151994/tcc-penaltis` no frontmatter.
 
 ## Fase 0 — Fundações
 
