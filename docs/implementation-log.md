@@ -63,3 +63,18 @@ _Em execução a partir de 2026-04-24._
 - Spec compliance: ✅ com deviations aceitas (flat-config modernizada, scripts equivalentes)
 - Code quality: consolidado na spec review (task é só config — spec review já leu arquivos e validou runtime)
 
+### Task 3 — lib/i18n.ts com TDD ✅
+
+**Commit:** `27fb49b feat(i18n): add locales, PATHS map, and translate helpers`
+
+**O que foi feito:**
+- `lib/i18n.ts`: `LOCALES`, `DEFAULT_LOCALE`, `PATHS`, `Locale` type, `isLocale` type guard, `translatePath`, `getCanonicalPath` — verbatim do plan.
+- `tests/i18n.test.ts`: 9 testes em 5 describes, verbatim do plan.
+- TDD respeitado: teste escrito primeiro → falhou (módulo não existe) → implementação → 9/9 green.
+
+**Verificação:** `pnpm test:run tests/i18n.test.ts` → 9 passed em 630ms. Só 2 arquivos modificados no diff.
+
+**Reviews:**
+- Spec compliance: ✅ verificação direta (Read + git show) — sem divergência do plan
+- Code quality: não necessário (verbatim paste + 100% cobertura de testes)
+
