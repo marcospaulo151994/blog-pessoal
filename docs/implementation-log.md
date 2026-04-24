@@ -252,6 +252,43 @@ _Em execução a partir de 2026-04-24, pós-Fase 0._
 
 **Reviews:** verbatim do plan (sem adaptações).
 
+### Task 13 — Componentes MDX ✅
+
+**Commit:** `da962e9 feat(mdx): add Figure, Callout, VideoEmbed, CodePlayground and wrapper`
+
+**O que foi feito:** 6 arquivos em `components/mdx/`:
+- `Figure.tsx` — figure com `next/image` + caption opcional
+- `Callout.tsx` — 3 tipos (info/warn/tip) com border-left colorida + emoji icon
+- `VideoEmbed.tsx` — video HTML5 com poster + preload metadata
+- `CodePlayground.tsx` — stub pra v0.4 (renderiza `<pre>` estático por enquanto)
+- `MDXContent.tsx` — wrapper que importa `MDXContent` de `@content-collections/mdx/react` e passa o registry de componentes
+- `index.ts` — registry exportando `mdxComponents` object
+
+**Verificação:** `pnpm build` verde, 7 páginas estáticas. Import `@content-collections/mdx/react` funcionando (MDXContent exportado no subpath `./react`, RSC-compatível).
+
+**Reviews:** verbatim do plan.
+
+### Task 14 — lib/content.ts + fixture + tests ✅
+
+**Commit:** `2efcc61 feat(content): add typed queries in lib/content.ts`
+
+**O que foi feito:**
+- Fixture: `content/posts/2026-04-24-exemplo.pt.mdx` (post "exemplo" em pt-BR pra alimentar tests).
+- `lib/content.ts`: 9 funções de query — `getPosts`, `getPostBySlug`, `getPostsByTag`, `getAllTags`, `getProjects`, `getProjectBySlug`, `getNotes`, `getNoteBySlug`, `getPostsByProjectKey`. Importam de `content-collections` (alias do tsconfig → `.content-collections/generated/`).
+- `tests/content.test.ts`: 4 tests sobre `getPosts` (only published, only lang, sorted desc) e `getPostBySlug` (match + null).
+- `vitest.config.ts`: adicionado alias `content-collections` → `./.content-collections/generated/index.js` (vitest não lê tsconfig paths, então precisa duplicar).
+
+**Verificação:**
+- `pnpm build` → "finished build of 3 collections and 1 document in 126ms" (fixture carregou).
+- `pnpm test:run` → 17/17 tests passando (9 i18n + 4 locale-detect + 4 content).
+- Exports gerados conforme plan: `allPosts`, `allProjetos`, `allNotas`.
+
+**Nova deprecation capturada:** content-collections alerta "The implicit addition of a content property to schemas is deprecated. Please add an explicit content property to your schema." — não bloqueante; referente aos schemas da Task 11. Endereçar em pass futura (adicionar `content: z.string()` explícito nos schemas ou reestruturar transforme).
+
+**Reviews:**
+- Spec compliance: ✅ com pequeno desvio necessário (alias vitest)
+- Code quality: ✅ (queries são declarativas, cobertura de tests OK)
+
 
 
 
