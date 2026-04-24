@@ -165,3 +165,33 @@ _Em execução a partir de 2026-04-24._
 
 **Reviews:** task trivial (só texto), feita direto sem subagent.
 
+### Task 9 — Deploy Vercel ✅
+
+**Deploy URL:** https://blog-pessoal-silk-nine.vercel.app/pt
+
+**O que foi feito (pelo usuário):**
+- Repo GitHub criado: https://github.com/marcospaulo151994/blog-pessoal
+- Push inicial de 21 commits pra `origin/master` (branch default local é `master`; não afeta Vercel).
+- Import na Vercel — Next.js detectado automaticamente, build completou em ~11 min (mais lento que estimado — talvez primeira vez criando projeto na conta).
+- URL pública live.
+
+**Verificação remota (via WebFetch):**
+- `/pt` → h1 "Olá", Nav com "Posts, Projetos, Notas, Sobre" + language toggle. ✅
+- `/en/about` → h1 "About" (rewrite `/en/about` → internal `/en/sobre` funcionando). ✅
+
+**README atualizado** com URL de produção.
+
+---
+
+## Fase 0 — CONCLUÍDA ✅
+
+**Estatísticas finais:**
+- 22 commits
+- 13/13 testes passando (9 i18n + 4 locale-detect)
+- 4 rotas estáticas prerendered (pt, en, pt/sobre, en/sobre)
+- Proxy middleware ativo
+- Deploy live
+
+**Critério de pronto do plan (§7 Fase 0):** ✅ URL Vercel mostra /pt e /en, toggle de tema funciona (usuário confirmou via teste manual), switcher de idioma funciona.
+
+
