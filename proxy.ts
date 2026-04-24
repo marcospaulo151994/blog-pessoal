@@ -4,7 +4,7 @@ import { detectLocale } from '@/lib/locale-detect';
 
 const COOKIE_NAME = 'NEXT_LANG';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
