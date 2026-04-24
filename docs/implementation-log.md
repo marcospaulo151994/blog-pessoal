@@ -138,3 +138,20 @@ _Em execução a partir de 2026-04-24._
 - Spec compliance: ✅ verbatim do plan
 - Code quality: N/A (componente simples)
 
+### Task 7 — Paleta Peach Noir + ThemeToggle + Nav ✅
+
+**Commit:** `040f049 feat(layout): add Peach Noir palette, theme toggle, and main nav`
+
+**O que foi feito:**
+- `app/globals.css`: substituição total dos defaults CNA pela paleta Peach Noir. CSS vars em OKLCH (light + `[data-theme="dark"]`), body/h1-h3/code/a com tipografia e cores baseadas nas vars, animação `grow` pro underline dos links, `@media prefers-reduced-motion` desabilita animações.
+- `public/theme-init.js`: IIFE que roda antes da hidratação, lê `localStorage.theme` ou `prefers-color-scheme` e seta `data-theme` no `<html>` — evita flash de tema errado.
+- `components/layout/ThemeToggle.tsx`: client component com `useState` + `useEffect` pra sync com attribute do html, persistência em localStorage, renderiza 🌙/☀️.
+- `components/layout/Nav.tsx`: server component que integra links pras 4 seções (posts/projetos/notas/sobre, com labels traduzidos via `labels[lang]` e paths via `PATHS[key][lang]`) + LanguageSwitcher + ThemeToggle.
+- `app/[lang]/layout.tsx`: wrap do children com `<Nav lang={lang} />` e `min-h-screen` no outer div.
+
+**Verificação:** `pnpm build` → 7 páginas estáticas geradas, sem warnings. Theme system pronto (vars defininas, script de init, toggle integrado, Nav aparece em todas as rotas).
+
+**Reviews:**
+- Spec compliance: ✅ verbatim do plan
+- Code quality: N/A (ThemeToggle tem lógica de estado simples, bem encapsulada; sem side-effects não previstos)
+
