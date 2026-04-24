@@ -12,6 +12,9 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./', import.meta.url)),
+      'content-collections': fileURLToPath(
+        new URL('./.content-collections/generated/index.js', import.meta.url),
+      ),
     },
   },
 });
