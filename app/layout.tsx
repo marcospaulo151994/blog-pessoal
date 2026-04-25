@@ -22,8 +22,8 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Marcos Medeiros',
-  description: 'Posts, projetos e notas sobre ML e visão computacional.',
+  title: 'marcos.run',
+  description: 'Posts, projetos e notas sobre ML e visão computacional — Marcos Medeiros.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

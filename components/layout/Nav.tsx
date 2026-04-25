@@ -12,8 +12,8 @@ export function Nav({ lang }: { lang: Locale }) {
   const t = labels[lang];
   return (
     <nav className="flex items-center justify-between py-6 px-8 border-b border-[var(--border)]">
-      <Link href={`/${lang}`} className="text-lg font-semibold font-serif">
-        Marcos Medeiros
+      <Link href={`/${lang}`} className="text-lg font-semibold font-mono">
+        marcos.run
       </Link>
       <div className="flex items-center gap-6 text-sm">
         <Link href={`/${lang}/${PATHS.posts[lang]}`}>{t.posts}</Link>
