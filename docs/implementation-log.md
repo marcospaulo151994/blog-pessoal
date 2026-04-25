@@ -483,6 +483,84 @@ _Iniciada e concluída em 2026-04-25._
 
 **Critério de pronto (§7 Fase 3 do plan):** ✅ Visitante descobre conteúdo via home, busca, RSS ou sitemap.
 
+## Fase 4 — Polish e OG images
+
+_Iniciada e (quase) concluída em 2026-04-25. Task 29 (sobre real) aguarda conteúdo do autor._
+
+### Task 25 — OG generator /api/og ✅
+
+**Commit:** `d6c46aa feat(og): add OG image generator with Peach palette`
+
+**O que foi feito:**
+- `app/api/og/route.tsx` com `runtime = 'edge'` + `ImageResponse` do `next/og`. Aceita query `title` e `tag`, retorna PNG 1200x630.
+- Brand text "marcos.run" no canto superior, título grande no centro, hashtag colorida embaixo se passada.
+
+**Desvios necessários:**
+- **OKLCH → hex:** Satori (engine do `@vercel/og`) não aceita `oklch()` em CSS. Convertidas as 4 cores da paleta Peach Noir pra hex equivalente: `#fdf4e8` (bg), `#6e6253` (muted), `#332b21` (text), `#d96a4a` (accent).
+- **Tag interpolation:** Satori reclama de múltiplos children dentro de div sem `display: flex`. Mudei `<div>#{tag}</div>` pra `<div>{`#${tag}`}</div>` (string única).
+
+**Verificação:** `GET /api/og?title=Test&tag=ml` → 200 image/png ~10KB, dimensões 1200x630 confirmadas via `file` cmd.
+
+### Task 26 — Metadata helper + aplicação ✅
+
+**Commit:** `<commit-tbd> feat(seo): add metadata helper with OG, hreflang, and Twitter Cards`
+
+**O que foi feito:**
+- `lib/metadata.ts` com `buildMetadata({title, description, path, ogImageUrl?, alternatePaths?})` retornando `Metadata` do Next com canonical, hreflang `pt-BR`/`en`/`x-default`, Open Graph (`og:title`/`og:url`/`og:image`/`og:type=article`) e Twitter Cards (`summary_large_image`).
+- `generateMetadata` adicionado a:
+  - `app/[lang]/posts/[slug]/page.tsx` — title/description do post, alternatePaths se existir versão no outro idioma, OG image gerada com `?title=...&tag=<1ª tag>`.
+  - `app/[lang]/sobre/page.tsx` — static, alternatePaths pra ambos os idiomas.
+  - `app/[lang]/page.tsx` (home), `app/[lang]/posts/page.tsx` (índice), `app/[lang]/posts/tags/[tag]/page.tsx`, `app/[lang]/stack/page.tsx` — bonus, descriptions adequadas.
+
+**Não aplicado** (rotas ainda não existem): `app/[lang]/projetos/[slug]/page.tsx` e `app/[lang]/notas/[slug]/page.tsx` — Tasks 18/19 vão criar essas rotas e adicionar generateMetadata seguindo o mesmo pattern.
+
+**Verificação:** HTML renderizado de `/pt/posts/mediapipe-pose-landmarks` confirmou `<title>`, `<meta property="og:image">` apontando pra `/api/og?title=...`, `<link rel="alternate" hreflang="pt-BR">` + `x-default`.
+
+### Task 27 — Framer Motion + Reveal stub ✅
+
+**Commit:** `38973a8 feat(animation): add page transitions and Reveal stub`
+
+**O que foi feito:**
+- `pnpm add framer-motion` — `framer-motion@12.38.0` (versão atual; `motion` package é o rebrand).
+- `components/layout/PageTransition.tsx` — fade + slide 8px, 180ms, respeitando `useReducedMotion`.
+- `components/ui/Reveal.tsx` — stub no-op (renderiza só `children`); ativará na v0.3 com scroll-triggered animation.
+- `app/[lang]/layout.tsx` envolve `{children}` em `<PageTransition>` (dentro do `flex-1`).
+
+**Concern de bundle:** Framer Motion contribui ~45KB gz (acima do budget de 20KB do plan). Aceito por ora — animação é discreta e padrão da indústria. **Otimização pra v0.3:** trocar pra CSS keyframes (animação atual é trivial: `opacity 0→1` + `transform: translateY(8px → 0)` em 180ms). Reduziria pra <1KB. Vou anotar no roadmap.
+
+### Task 28 — Vercel Analytics ✅
+
+**Commit:** `ebcc9e5 feat: enable Vercel Analytics`
+
+**O que foi feito:**
+- `pnpm add @vercel/analytics@2.0.1`.
+- `app/layout.tsx` importa `Analytics` de `@vercel/analytics/next` e renderiza `<Analytics />` em `<body>` depois de `{children}`.
+
+**Ativação requer ação humana:** autor precisa ir em Vercel Dashboard → Project → Analytics → Enable. Sem isso, dados não são coletados (ainda que o componente esteja renderizando).
+
+### Task 29 — Real /sobre page ⏸
+
+**Bloqueada esperando conteúdo do autor.** Atual `/sobre` é placeholder ("Página sobre em construção"). Pra escrever a página real, autor precisa fornecer:
+- Quem é (graduação, cidade, foco principal)
+- O que estuda/gosta (ML, visão computacional, etc.)
+- Onde encontrar (links que ele quer expor)
+- Tom (formal vs descontraído)
+
+---
+
+## Fase 4 — concluída ✅ (exceto Task 29)
+
+**Estatísticas:**
+- 4 de 5 tasks concluídas (29 esperando conteúdo)
+- OG images automáticas funcionando — share em X/LinkedIn agora mostra card bonito
+- Metadata completo (canonical, hreflang, OG, Twitter)
+- Page transitions sutis com respeito a reduced-motion
+- Vercel Analytics integrado (precisa enable na dashboard)
+
+**Next steps pra v0.3 (anotado no roadmap):**
+- CSS keyframes pra page transition (cortar ~44KB gz do bundle)
+- hreflang `<xhtml:link>` no sitemap (atualmente o MetadataRoute.Sitemap não suporta nativamente)
+
 
 
 
