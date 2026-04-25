@@ -23,6 +23,7 @@
   --success: #4ade80;
   --glow-a: rgba(120, 80, 180, 0.18);
   --glow-b: rgba(80, 120, 200, 0.10);
+  --grid-line: rgba(255, 255, 255, 0.025);
 }
 
 :root[data-theme='light'] {
@@ -41,6 +42,7 @@
   --success: #16a34a;
   --glow-a: rgba(167, 139, 250, 0.16);
   --glow-b: rgba(96, 165, 250, 0.10);
+  --grid-line: rgba(0, 0, 0, 0.04);
 }
 
 body {

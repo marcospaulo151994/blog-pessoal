@@ -1,20 +1,38 @@
 import type { Locale } from '@/lib/i18n';
-import { NewsletterCta } from '@/components/ui/NewsletterCta';
 
 export function Footer({ lang }: { lang: Locale }) {
+  const rssHref = `/${lang === 'pt' ? '' : 'en/'}rss.xml`;
   return (
-    <footer className="mt-20 border-t border-[var(--border)] py-8 text-sm text-[var(--text-muted)]">
-      <div className="max-w-[1000px] mx-auto px-4 flex flex-wrap gap-4 justify-between">
-        <div>© {new Date().getFullYear()} Marcos Paulo de Medeiros</div>
-        <div className="flex gap-4">
-          <a href={`/${lang === 'pt' ? '' : 'en/'}rss.xml`}>RSS</a>
-          <a href="https://github.com/marcospaulo151994" target="_blank" rel="noopener">GitHub</a>
-          <a href="www.linkedin.com/in/marcospaulodm" target="_blank" rel="noopener">LinkedIn</a>
-          <a href="mailto:marcospaulo_medeiros@hotmail.com">Email</a>
+    <footer className="border-t border-[var(--border)] mt-32">
+      <div className="max-w-[1100px] mx-auto px-8 py-6 flex items-center justify-between text-[12px] text-[var(--text-muted)] font-mono">
+        <span>© {new Date().getFullYear()} marcos medeiros · feito com cuidado</span>
+        <div className="flex items-center gap-5">
+          <a
+            href="https://github.com/marcospaulo151994"
+            target="_blank"
+            rel="noopener"
+            className="hover:text-[var(--text)] transition-colors"
+          >
+            github
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener"
+            className="hover:text-[var(--text)] transition-colors"
+          >
+            twitter
+          </a>
+          <a
+            href="mailto:marcospaulo_medeiros@hotmail.com"
+            className="hover:text-[var(--text)] transition-colors"
+          >
+            email
+          </a>
+          <a href={rssHref} className="hover:text-[var(--text)] transition-colors">
+            rss
+          </a>
         </div>
-      </div>
-      <div className="max-w-[1000px] mx-auto px-4 mt-4">
-        <NewsletterCta />
       </div>
     </footer>
   );

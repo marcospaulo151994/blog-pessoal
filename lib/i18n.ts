@@ -11,6 +11,7 @@ export const PATHS = {
   stack: { pt: 'stack', en: 'stack' },
   sobre: { pt: 'sobre', en: 'about' },
   tags: { pt: 'tags', en: 'tags' },
+  newsletter: { pt: 'newsletter', en: 'newsletter' },
 } as const;
 
 type PathKey = keyof typeof PATHS;
