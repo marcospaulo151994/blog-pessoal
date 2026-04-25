@@ -409,6 +409,80 @@ Fora do plan original — autor decidiu adicionar mais conteúdo enquanto Task 1
 
 **Painel admin (Decap CMS / TinaCMS):** adiado pra v0.2+. Recomendação registrada: avaliar quando houver 6-8 posts publicados consistentemente.
 
+## Fase 3 — Home e descoberta
+
+_Iniciada e concluída em 2026-04-25._
+
+### Task 21 — Componentes da home ✅
+
+**Commit:** `18860b3 feat(home): add hero, recent posts, featured projects, garden peek`
+
+**O que foi feito:**
+- `components/home/Hero.tsx` — hero com Plex Serif 5xl/6xl, copy bilíngue, 2 CTAs ("Ler posts →" / "Ver projetos →").
+- `components/home/RecentPosts.tsx` — top 3 posts publicados via `getPosts({lang}).slice(0, 3)`, listados com `<PostCard>`.
+- `components/home/FeaturedProjects.tsx` — top 2 projetos com `featured: true`, returna `null` se vazio (estado atual).
+- `components/home/GardenPeek.tsx` — top 3 notas mais recentes, returna `null` se vazio (estado atual).
+- `app/[lang]/page.tsx` — substituiu placeholder "Olá / Hello" por composição das 4 sections.
+
+**Stubs criados (necessários pra build):** `components/ui/ProjectCard.tsx` e `components/ui/NoteCard.tsx` foram criados como minimal stubs porque Tasks 18/19 (que os implementam de verdade) ainda não foram executadas. Stubs renderizam um `<article>` com link pro detalhe — Tasks 18/19 vão **sobrescrever** (não estender) com versões completas.
+
+**Estado da home:** com 4 posts e 0 projetos/notas, a home mostra Hero + "Escritos recentes" (3 posts) + duas sections vazias (escondidas). Vai ficar mais cheia conforme conteúdo aparecer.
+
+### Task 22 — Search com MiniSearch + ⌘K ✅
+
+**Commit:** `9186a96 feat(search): add search dialog with MiniSearch and ⌘K shortcut`
+
+**O que foi feito:**
+- Instalado `minisearch@7.2.0`.
+- `lib/search.ts` — interface estável `SearchResult` + `buildSearchIndex(lang)` que indexa posts/projetos/notas com fields `title`, `description`, `content`.
+- `app/api/search-index/route.ts` — endpoint server-side que retorna o JSON do índice.
+- `components/ui/SearchDialog.tsx` — modal que carrega o índice on-demand (1ª abertura), instancia MiniSearch com boost `title:3`/`description:2`, prefix + fuzzy 0.2, mostra até 10 resultados.
+- `components/ui/SearchTrigger.tsx` — botão 🔍 com listener global pra `⌘K`/`Ctrl+K` + Escape.
+- Nav.tsx integra `<SearchTrigger>` entre LanguageSwitcher e ThemeToggle.
+
+**Verificação:** `GET /api/search-index?lang=pt` retorna 4 documentos (os 4 posts publicados). `lang=xx` (inválido) retorna 400.
+
+### Task 23 — RSS + sitemap + robots ✅
+
+**Commit:** `33fdb1e feat(seo): add RSS feeds, sitemap, and robots.txt`
+
+**O que foi feito:**
+- `app/rss.xml/route.ts` — RSS pt-BR com 4 itens, channel "marcos.run — Blog".
+- `app/en/rss.xml/route.ts` — RSS en-US com 0 itens (válido), channel em inglês.
+- `app/sitemap.ts` — Next.js MetadataRoute, 16 URLs (12 estáticas: home + posts + projetos + notas + stack + sobre × 2 locales; 4 dinâmicas: posts pt).
+- `app/robots.ts` — Allow `/`, sitemap declarado.
+
+**SITE_URL fallback:** `https://blog-pessoal-silk-nine.vercel.app` enquanto o domínio `marcos.run` não é comprado. Quando comprar, basta setar `NEXT_PUBLIC_SITE_URL` no env da Vercel.
+
+**Limitação:** sitemap não emite hreflang `<xhtml:link>` alternates (Next.js MetadataRoute não suporta nativamente). Pra hreflang verdadeiro, seria emitir XML custom — fica como melhoria futura.
+
+### Task 24 — Footer + Share + NewsletterCta stub ✅
+
+**Commit:** `815171b feat(layout): add footer, share buttons, and newsletter stub`
+
+**O que foi feito:**
+- `components/ui/ShareButtons.tsx` — botões pra X (twitter intent), LinkedIn share offsite, "Copiar link" via `navigator.clipboard`.
+- `components/ui/NewsletterCta.tsx` — stub que retorna `null` (ativa em v0.2 com Buttondown/ConvertKit).
+- `components/layout/Footer.tsx` — © Marcos Medeiros + 4 links (RSS lang-aware, GitHub `marcospaulo151994`, LinkedIn placeholder, mailto).
+- `app/[lang]/layout.tsx` — wrap com `flex flex-col` + `flex-1` em children pra footer grudar embaixo.
+- `app/[lang]/posts/[slug]/page.tsx` — ShareButtons aparece antes do PostComments stub no rodapé do post.
+
+**LinkedIn URL** continua placeholder `linkedin.com/in/marcos-medeiros` — autor confirma o handle real depois.
+
+---
+
+## Fase 3 — CONCLUÍDA ✅
+
+**Estatísticas:**
+- 4 tasks (21-24) executadas
+- 17/17 tests passando (sem novos testes — UI puro)
+- Home com Hero + 3 posts recentes
+- Busca ⌘K com 4 documentos indexados, fuzzy match
+- RSS pt + en, sitemap com 16 URLs, robots.txt
+- Footer com links sociais + copyright
+
+**Critério de pronto (§7 Fase 3 do plan):** ✅ Visitante descobre conteúdo via home, busca, RSS ou sitemap.
+
 
 
 
