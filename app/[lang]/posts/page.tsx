@@ -3,18 +3,21 @@ import { notFound } from 'next/navigation';
 import { getPosts } from '@/lib/content';
 import { isLocale, PATHS, type Locale } from '@/lib/i18n';
 import { buildMetadata } from '@/lib/metadata';
-import { PostCard } from '@/components/ui/PostCard';
+import { postReadingTime } from '@/lib/format';
+import { ArchiveList } from '@/components/ui/ArchiveList';
 
 const copy = {
   pt: {
-    title: 'Posts',
+    title: 'Arquivo',
     empty: 'Nenhum post publicado ainda.',
     description: 'Posts sobre ML, visão computacional e desenvolvimento.',
+    countSuffix: 'posts',
   },
   en: {
-    title: 'Posts',
+    title: 'Archive',
     empty: 'No posts published yet.',
     description: 'Posts on ML, computer vision, and software development.',
+    countSuffix: 'posts',
   },
 } as const;
 
@@ -40,29 +43,39 @@ export async function generateMetadata({
 export default async function PostsIndex({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
+  const l = lang as Locale;
+  const t = copy[l];
 
-  const posts = getPosts({ lang });
-  const t = copy[lang];
+  const posts = getPosts({ lang: l });
+  const total = posts.length;
+  const totalLabel = `${String(total).padStart(3, '0')} ${t.countSuffix}`;
+
+  // Pre-shape posts as plain serializable data for the client component.
+  const items = posts.map((p) => ({
+    translationKey: p.translationKey,
+    slug: p.slug,
+    title: p.title,
+    date: p.date,
+    tags: p.tags,
+    mins: postReadingTime(p),
+  }));
 
   return (
-    <main className="max-w-[800px] mx-auto px-4 py-10">
-      <h1 className="text-4xl font-semibold tracking-tight">{t.title}</h1>
+    <main className="max-w-[1100px] mx-auto px-8 py-12">
+      <h1
+        className="font-semibold"
+        style={{ fontSize: 40, letterSpacing: '-1.5px' }}
+      >
+        {t.title}
+      </h1>
+      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.5px] text-[var(--text-muted)]">
+        {totalLabel}
+      </p>
+
       {posts.length === 0 ? (
         <p className="mt-6 text-[var(--text-muted)]">{t.empty}</p>
       ) : (
-        <div className="mt-8">
-          {posts.map((p) => (
-            <PostCard
-              key={p.translationKey}
-              slug={p.slug}
-              title={p.title}
-              description={p.description}
-              date={p.date}
-              tags={p.tags}
-              lang={lang as Locale}
-            />
-          ))}
-        </div>
+        <ArchiveList lang={l} posts={items} />
       )}
     </main>
   );

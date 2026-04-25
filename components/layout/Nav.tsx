@@ -9,14 +9,14 @@ import { PATHS, type Locale } from '@/lib/i18n';
 
 const labels = {
   pt: {
-    posts: 'Posts',
+    posts: 'Arquivo',
     projetos: 'Projetos',
     notas: 'Notas',
     stack: 'Stack',
     sobre: 'Sobre',
   },
   en: {
-    posts: 'Posts',
+    posts: 'Archive',
     projetos: 'Projects',
     notas: 'Notes',
     stack: 'Stack',

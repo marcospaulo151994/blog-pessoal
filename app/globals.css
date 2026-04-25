@@ -134,3 +134,61 @@ pre[data-theme] code {
 .prose-content a:hover::after {
   opacity: 0.5;
 }
+
+/* ---------- Dev Premium primitives ---------- */
+
+/* Pulse for the "writing now" status pill bullet. */
+@keyframes dpPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.dp-pulse {
+  animation: dpPulse 2s ease-in-out infinite;
+}
+
+/* Card hover (featured post on home, etc.). */
+.dp-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.dp-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+/* Row entry for lists (recent posts, archive). */
+.dp-row {
+  transition: transform 150ms ease, color 150ms ease;
+}
+.dp-row:hover {
+  transform: translateX(2px);
+}
+.dp-row:hover .dp-row-num,
+.dp-row:hover .dp-row-date {
+  color: var(--text);
+}
+
+/* Inline link with underline reveal on hover. */
+.dp-link {
+  position: relative;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.dp-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.dp-link:hover::after {
+  opacity: 0.5;
+}
+.dp-link:hover {
+  color: var(--text);
+}
