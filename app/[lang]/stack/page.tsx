@@ -77,12 +77,12 @@ export default async function StackPage({
 
   return (
     <main className="max-w-[760px] mx-auto px-4 py-10">
-      <h1 className="font-serif text-4xl font-bold">{t.title}</h1>
+      <h1 className="text-4xl font-semibold tracking-tight">{t.title}</h1>
       <p className="mt-3 text-[var(--text-muted)]">{t.intro}</p>
 
       {sectionOrder.map((key) => (
         <section key={key} className="mt-10">
-          <h2 className="font-serif text-2xl mb-3">{t.sections[key]}</h2>
+          <h2 className="text-2xl font-semibold mb-3 tracking-tight">{t.sections[key]}</h2>
           <p className="text-[var(--text-muted)] italic">{t.placeholder}</p>
         </section>
       ))}

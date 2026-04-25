@@ -20,7 +20,7 @@ export function Hero({ lang }: { lang: Locale }) {
   const t = copy[lang];
   return (
     <section className="py-20">
-      <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight">
+      <h1 className="text-5xl md:text-6xl font-semibold leading-tight tracking-tight">
         {t.line1}
         <br />
         {t.line2}

@@ -45,7 +45,7 @@ export default async function TagPage({
 
   return (
     <main className="max-w-[800px] mx-auto px-4 py-10">
-      <h1 className="font-serif text-3xl font-bold">
+      <h1 className="text-3xl font-semibold tracking-tight">
         {lang === 'pt' ? 'Posts com a tag' : 'Posts tagged'} <code>#{tag}</code>
       </h1>
       <div className="mt-8">

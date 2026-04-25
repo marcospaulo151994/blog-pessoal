@@ -14,7 +14,7 @@ export function PostCard({ slug, title, description, date, tags, lang }: PostCar
   return (
     <article className="py-6 border-b border-[var(--border)] last:border-0 group">
       <time className="text-sm text-[var(--text-muted)]">{dateLabel}</time>
-      <h2 className="font-serif text-2xl mt-1 group-hover:text-[var(--accent)] transition-colors">
+      <h2 className="text-2xl font-semibold mt-1 tracking-tight group-hover:text-[var(--accent)] transition-colors">
         <Link href={`/${lang}/${PATHS.posts[lang]}/${slug}`}>{title}</Link>
       </h2>
       <p className="mt-2 text-[var(--text-muted)]">{description}</p>

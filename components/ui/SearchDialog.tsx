@@ -53,7 +53,7 @@ export function SearchDialog({
       onClick={() => onOpenChange(false)}
     >
       <div
-        className="bg-[var(--bg-elevated)] rounded-lg w-full max-w-xl shadow-xl"
+        className="bg-[var(--surface)] rounded-lg w-full max-w-xl shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <input
@@ -69,7 +69,7 @@ export function SearchDialog({
               <Link
                 href={r.href}
                 onClick={() => onOpenChange(false)}
-                className="flex items-center gap-3 p-3 hover:bg-[var(--code-bg)]"
+                className="flex items-center gap-3 p-3 hover:bg-[var(--surface-hover)]"
               >
                 <span className="text-xs text-[var(--text-muted)] uppercase">{r.type}</span>
                 <span>{r.title}</span>

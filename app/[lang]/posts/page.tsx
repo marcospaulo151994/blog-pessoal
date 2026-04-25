@@ -46,7 +46,7 @@ export default async function PostsIndex({ params }: { params: Promise<{ lang: s
 
   return (
     <main className="max-w-[800px] mx-auto px-4 py-10">
-      <h1 className="font-serif text-4xl font-bold">{t.title}</h1>
+      <h1 className="text-4xl font-semibold tracking-tight">{t.title}</h1>
       {posts.length === 0 ? (
         <p className="mt-6 text-[var(--text-muted)]">{t.empty}</p>
       ) : (

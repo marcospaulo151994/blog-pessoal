@@ -21,7 +21,7 @@ export function NoteCard({ slug, title, maturity, planted, lang }: NoteCardProps
   });
   return (
     <article className="py-4 border-b border-[var(--border)] last:border-0">
-      <h3 className="font-serif text-lg">
+      <h3 className="text-lg font-semibold tracking-tight">
         <Link href={`/${lang}/${PATHS.notas[lang]}/${slug}`}>{title}</Link>
       </h3>
       <div className="mt-1 text-xs text-[var(--text-muted)]">

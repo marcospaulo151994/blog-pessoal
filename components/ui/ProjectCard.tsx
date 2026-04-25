@@ -18,7 +18,7 @@ interface ProjectCardProps {
 export function ProjectCard({ slug, title, tagline, status, stack, lang }: ProjectCardProps) {
   return (
     <article className="py-6 border-b border-[var(--border)] last:border-0">
-      <h3 className="font-serif text-xl">
+      <h3 className="text-xl font-semibold tracking-tight">
         <Link href={`/${lang}/${PATHS.projetos[lang]}/${slug}`}>{title}</Link>
       </h3>
       <p className="mt-1 text-sm text-[var(--text-muted)]">{tagline}</p>

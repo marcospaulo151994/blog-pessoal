@@ -11,7 +11,7 @@ export function RecentPosts({ lang }: { lang: Locale }) {
 
   return (
     <section className="py-10 border-t border-[var(--border)]">
-      <h2 className="font-serif text-2xl mb-4">{label}</h2>
+      <h2 className="text-2xl font-semibold mb-4 tracking-tight">{label}</h2>
       {posts.map((p) => (
         <PostCard
           key={p.translationKey}

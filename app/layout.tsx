@@ -1,22 +1,16 @@
 import type { Metadata } from 'next';
-import { IBM_Plex_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
-const serif = IBM_Plex_Serif({
-  weight: ['600', '700'],
-  subsets: ['latin', 'latin-ext'],
-  display: 'swap',
-  variable: '--font-serif-loaded',
-});
-const sans = IBM_Plex_Sans({
-  weight: ['400', '500', '600'],
+const inter = Inter({
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--font-sans-loaded',
 });
-const mono = IBM_Plex_Mono({
-  weight: ['400', '600'],
+const mono = JetBrains_Mono({
+  weight: ['400', '500', '600'],
   subsets: ['latin', 'latin-ext'],
   display: 'swap',
   variable: '--font-mono-loaded',
@@ -31,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       suppressHydrationWarning
-      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
+      className={`${inter.variable} ${mono.variable}`}
     >
       <head>
         {/* carrega o script de tema antes da hidratação para evitar FOUC */}

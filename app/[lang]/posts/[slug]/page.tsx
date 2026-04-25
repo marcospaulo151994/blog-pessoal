@@ -68,7 +68,7 @@ export default async function PostPage({
   return (
     <article className="max-w-[680px] mx-auto px-4 py-10">
       <header className="mb-8">
-        <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight">
+        <h1 className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight">
           {post.title}
         </h1>
         <div className="flex gap-3 items-center mt-4 text-sm text-[var(--text-muted)]">
