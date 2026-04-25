@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 const serif = IBM_Plex_Serif({
@@ -36,7 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* carrega o script de tema antes da hidratação para evitar FOUC */}
         <script src="/theme-init.js" />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
