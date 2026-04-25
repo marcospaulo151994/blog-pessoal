@@ -389,9 +389,11 @@ Fora do plan original — autor decidiu adicionar mais conteúdo enquanto Task 1
 - `cbab6c4 content: add LGPD em 5 minutos pra dev` — `/pt/posts/lgpd-em-5-minutos` (~880 palavras). 7 conceitos LGPD (bases legais → multas) + 7 mudanças concretas no código.
 - `69c610e content: add OWASP Top 10 review post` — `/pt/posts/owasp-top-10-2021` (~950 palavras). Lista das 10 categorias de 2021 com exemplo + mitigação direta cada.
 
-**Post rascunhado e rejeitado:** "Quando NÃO usar deep learning" (sklearn vs DL pra tabular). Removido antes de commit. Autor pode pedir reescrita ou abandonar.
+**Post sklearn — 2 iterações:**
+- 1ª versão "Quando NÃO usar deep learning" (opinião contra DL pra tabular) — autor rejeitou (ângulo errado). Removida antes de commit.
+- 2ª versão "scikit-learn: a API que organizou ML clássico" (design de interface, sem polêmica) — aprovada e commitada (`<commit-tbd>`).
 
-**Estado:** 3 posts em produção (`mediapipe-pose-landmarks`, `lgpd-em-5-minutos`, `owasp-top-10-2021`), 12+ tag routes prerendered.
+**Estado:** 4 posts em produção (`mediapipe-pose-landmarks`, `lgpd-em-5-minutos`, `owasp-top-10-2021`, `scikit-learn-a-api-do-ml`), 14+ tag routes prerendered.
 
 
 
