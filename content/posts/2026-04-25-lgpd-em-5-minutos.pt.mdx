@@ -1,0 +1,87 @@
+---
+translationKey: "lgpd-em-5-minutos"
+slug: "lgpd-em-5-minutos"
+lang: "pt"
+title: "LGPD em 5 minutos pra dev"
+description: "Bases legais, direitos do titular, RIPD, DPO, multas — e o que muda no código que você escreve."
+date: 2026-04-25
+tags: ["lgpd", "seguranca", "compliance", "backend"]
+status: "published"
+---
+
+Quando o jurídico do seu trabalho te chama pra "implementar LGPD" no sistema, geralmente o que ele quer dizer é: faz com que a gente não tome multa. O problema é que LGPD não é uma feature — é um conjunto de princípios que afetam como você projeta schema, escreve endpoint, configura logs e responde incidentes. Esse post é o resumo do que importa pra um dev.
+
+## A lei em uma frase
+
+A **Lei Geral de Proteção de Dados** (Lei 13.709/2018), em vigor desde 2020, regula o tratamento de dados pessoais de pessoas no Brasil. Inspirada na GDPR europeia, ela vale pra qualquer empresa que opera no Brasil ou trata dados de brasileiros — independente de onde o servidor está.
+
+"Tratamento" abrange basicamente tudo: coletar, armazenar, usar, transferir, deletar. "Dados pessoais" é qualquer informação que identifique ou possa identificar uma pessoa — nome, e-mail, CPF, IP, geolocalização, foto, voz.
+
+## Os 7 conceitos que você precisa saber
+
+### 1. Bases legais
+
+Você não precisa de consentimento pra todo tratamento — mas precisa de **alguma base legal**. As 10 bases mais usadas:
+
+- **Consentimento** (livre, informado, específico — banner cookie genérico não vale)
+- **Cumprimento de obrigação legal** (ex.: emitir nota fiscal)
+- **Execução de contrato** (ex.: enviar pedido pro endereço cadastrado)
+- **Legítimo interesse** (precisa balancear contra direitos do titular — não é cheque em branco)
+- **Tutela da saúde**, **proteção do crédito**, e mais 5.
+
+Erro comum: usar consentimento como base pra tudo. Acaba forçando o usuário a clicar "aceito" pra usar funcionalidades que se enquadrariam melhor em outras bases.
+
+### 2. Princípios
+
+Os mais relevantes pra código:
+- **Finalidade**: dado coletado pra X não pode ser usado pra Y sem nova base.
+- **Necessidade**: só coletar o mínimo necessário. Não peça CPF se não vai usar.
+- **Transparência**: usuário precisa saber o que você faz com os dados (Política de Privacidade clara, não 30 páginas de jargão).
+
+### 3. Direitos do titular
+
+A pessoa cujos dados você tem pode pedir, a qualquer momento:
+- **Confirmação** de que você tem dados dela
+- **Acesso** aos dados
+- **Correção** se estão errados
+- **Anonimização ou eliminação** se desnecessários
+- **Portabilidade** (exportação em formato estruturado)
+- **Revogação de consentimento**
+
+E você tem **15 dias** pra responder. Tem que ter um endpoint ou processo pra isso.
+
+### 4. RIPD (Relatório de Impacto)
+
+Pra tratamentos de **alto risco** (uso de dados sensíveis, vigilância, decisão automatizada de impacto significativo), você precisa documentar um **Relatório de Impacto à Proteção de Dados** — equivalente brasileiro do DPIA da GDPR. Não é opcional pros casos previstos.
+
+### 5. Encarregado (DPO)
+
+Toda empresa que trata dados pessoais precisa indicar um **Encarregado** — figura responsável por canalizar reclamações dos titulares e ser ponto de contato com a ANPD. Pode ser interno, terceirizado, ou advogado externo.
+
+### 6. Notificação de incidente
+
+Vazamento de dados? Você tem **2 dias úteis** pra notificar a ANPD e os titulares afetados. Esquecer essa notificação é multa adicional.
+
+### 7. Multas
+
+Até **2% do faturamento da empresa no Brasil**, limitadas a **R$50 milhões por infração**. A ANPD já aplicou multas — não é teórico.
+
+## O que isso muda no código
+
+Sete coisas concretas que entram no seu fluxo de dev:
+
+- **Logs sem PII**. `logger.info(f"user logged in: {user.email}")` é bug. Substitui por `user.id` ou hash. Implementar filtro/scrubbing nos loggers de aplicação.
+- **Soft delete não é delete**. "Marcou `deleted_at`" não atende pedido de exclusão se a finalidade legal já cessou. Precisa de hard delete real ou anonimização (zerar campos identificáveis).
+- **Endpoints de auto-serviço**. `/me/export` (download em JSON ou CSV) e `/me/delete` (com confirmação) — esses dois endpoints economizam horas de processo manual a cada pedido.
+- **Consentimento granular**. Em vez de um checkbox "aceito tudo", separa: consinto receber marketing, consinto compartilhamento com parceiros X, etc. Cada um com timestamp registrado em tabela auditável.
+- **Criptografia at rest e in transit**. TLS em todo lugar, dados sensíveis (CPF, dados de saúde, senha) com hash/criptografia no banco — nunca plain text.
+- **Mínima coleta**. Pergunta pra cada campo: "preciso disso pra fazer o serviço?". Cadastro com 12 campos é cheiro de "vamos coletar e ver depois".
+- **Retenção definida**. Define quanto tempo cada dado vive (ex.: log de acesso 6 meses, dados de cadastro enquanto cliente + 5 anos pós cancelamento por obrigação fiscal). Implementa job de purge.
+
+## Onde aprofundar
+
+- Texto da lei: [planalto.gov.br/lei-13709](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm)
+- Site da ANPD com guias técnicos: [gov.br/anpd](https://www.gov.br/anpd/pt-br)
+- Comparativo LGPD vs GDPR: lê o artigo da [IAPP](https://iapp.org/) — útil pra quem trabalha com mercado europeu também.
+
+LGPD não é "bug do jurídico". É restrição de design que muda como você modela dados, autoriza acesso, escreve log, responde incidente. Pra quem encara como princípio em vez de checklist, vira uma prática contínua e não uma corrida de última hora antes de auditoria.
