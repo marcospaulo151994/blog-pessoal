@@ -1,0 +1,101 @@
+---
+# === COPIE ESTE ARQUIVO PARA CRIAR UM NOVO POST ===
+#
+# Passos:
+# 1. cp content/posts/_TEMPLATE.pt.mdx.example content/posts/AAAA-MM-DD-meu-slug.pt.mdx
+# 2. Edite o frontmatter abaixo (todos os campos com TODO)
+# 3. Escreva o corpo do post depois do --- final
+# 4. Veja em dev: pnpm dev → http://localhost:3000/pt/posts/<seu-slug>
+# 5. Publique: status: "published" + git add + commit + push
+
+# Identifica o post entre versões pt/en (mesma chave nas duas).
+# Use kebab-case sem acentos. Não muda depois de publicado.
+translationKey: "TODO-mesma-coisa-do-slug-em-geral"
+
+# Slug = pedaço final da URL (/pt/posts/<slug>). Use kebab-case.
+# Pode ser igual ao translationKey, pode ser diferente se você quiser
+# slug pt/en distintos (ex: "tcc-penaltis" / "tcc-penalty-direction").
+slug: "TODO-meu-slug-aqui"
+
+# Idioma deste arquivo. "pt" ou "en". Cria outro arquivo .en.mdx
+# com o mesmo translationKey se quiser versão em inglês.
+lang: "pt"
+
+# Título exibido no <h1>. Não inclui o nome do site.
+title: "TODO Título do post"
+
+# 1-2 frases (≤200 chars). Aparece no índice, no OG card e no RSS.
+# Faça caprichado — é o que o leitor lê antes de decidir clicar.
+description: "TODO Descrição curta que vende o post."
+
+# Data de publicação. Use formato YYYY-MM-DD.
+date: 2026-MM-DD
+
+# Tags em kebab-case, em inglês (a URL fica /tags/<tag>).
+# 2-5 tags é o sweet spot.
+tags: ["TODO", "exemplo"]
+
+# "draft" = não aparece em prod. "published" = vai pro ar no próximo deploy.
+# Sempre comece com "draft" e mude pra "published" só quando tiver revisado.
+status: "draft"
+
+# === Campos opcionais ===
+
+# Linka post a um projeto (frontmatter `translationKey` da pasta /projetos/).
+# Se preenchido, o projeto vai listar este post automaticamente.
+# projectKey: "tcc-penalty-direction"
+
+# Override da OG image padrão (caminho ou URL).
+# Se omitido, OG é gerada automaticamente com título + 1ª tag.
+# cover: "./meu-post/cover.png"
+
+# Tempo de leitura em minutos. Se omitido, não exibe.
+# readingTime: 8
+
+# Data da última edição (formato YYYY-MM-DD). Aparece como "atualizado em".
+# updated: 2026-04-30
+---
+
+## Primeira seção
+
+Conteúdo em Markdown ou MDX. Você pode usar:
+
+- **Negrito**, *itálico*, ~~riscado~~
+- Listas, tabelas, blockquotes
+- Code fences com syntax highlight (Shiki):
+
+```python
+def hello(name: str) -> str:
+    return f"Hello, {name}!"
+```
+
+- Componentes React custom (importados via MDX):
+
+<Callout type="tip">
+Use `<Callout type="info|warn|tip">` pra blocos de destaque.
+Tipos disponíveis: `info` (azul), `warn` (âmbar), `tip` (verde).
+</Callout>
+
+<Figure
+  src="./meu-post/imagem.png"
+  caption="Legenda opcional. Coloque assets na pasta `content/posts/<nome-do-arquivo-sem-extensão>/`."
+/>
+
+<VideoEmbed src="./meu-post/demo.mp4" poster="./meu-post/poster.png" />
+
+## Segunda seção
+
+Use `## H2` pra seções principais e `### H3` pra subseções. Evite ir além de H4 — em post longo, cabeçalho fundo confunde.
+
+> Blockquotes também funcionam. Útil pra citar paper ou pessoa.
+
+Links: [texto do link](https://exemplo.com).
+
+## Conclusão
+
+Algumas convenções deste blog que vale seguir:
+
+- **~600-1000 palavras** é o sweet spot. Posts mais longos quebra em série.
+- **Hook na primeira frase.** Se o leitor não engajar nas 2 primeiras linhas, fecha a aba.
+- **Code blocks com lang explícita** (` ```python `, ` ```ts `) — Shiki precisa pra colorir.
+- **Links no final pra leituras complementares.**
