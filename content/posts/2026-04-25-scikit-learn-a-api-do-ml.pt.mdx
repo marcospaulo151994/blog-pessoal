@@ -1,0 +1,128 @@
+---
+translationKey: "scikit-learn-a-api-do-ml"
+slug: "scikit-learn-a-api-do-ml"
+lang: "pt"
+title: "scikit-learn: a API que organizou ML clássico"
+description: "Por que três verbos (fit, predict, transform) viraram o padrão de fato pra qualquer biblioteca de ML — e o que torna a interface do sklearn tão difícil de melhorar."
+date: 2026-04-25
+tags: ["sklearn", "ml", "api-design", "python"]
+status: "published"
+---
+
+Antes de 2007, fazer machine learning em Python parecia mais com pesquisa do que com engenharia. Cada paper vinha com seu próprio script, cada biblioteca tinha sua própria interface. Treinar um SVM e um Random Forest no mesmo dataset envolvia traduzir entre conceitos diferentes — uma chamava `train()`, outra `learn()`, outra recebia matrizes em ordens incompatíveis.
+
+O **scikit-learn**, lançado em 2007 por David Cournapeau e amadurecido pela comunidade INRIA-Saclay, fez algo simples e poderoso: definiu uma única interface pra todos os algoritmos de ML clássico. Quase 20 anos depois, essa interface ainda é o **lingua franca** do ML em Python — ao ponto de bibliotecas modernas como XGBoost, LightGBM e CatBoost adotarem deliberadamente a mesma API mesmo sem dependerem do sklearn.
+
+Vale entender por que essa interface vingou.
+
+## Os três verbos
+
+Toda classe do sklearn implementa um subconjunto destes três métodos:
+
+- **`fit(X, y=None)`** — treina/aprende a partir dos dados.
+- **`predict(X)`** — produz uma saída pra dados novos. Usado em estimators (classificadores, regressors).
+- **`transform(X)`** — transforma os dados. Usado em transformers (scalers, encoders, redutores de dimensionalidade).
+
+Essa simplicidade não é trivial. A maioria dos algoritmos de ML, no fundo, faz uma de duas coisas: aprende a partir de dados pra **mapear input em output** (estimator) ou **modificar a representação** dos dados (transformer). Reduzir tudo a essas duas categorias é o que viabiliza composição.
+
+```python
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+# Transformer: aprende média e desvio, depois normaliza
+scaler = StandardScaler().fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+
+# Estimator: aprende uma fronteira de decisão
+model = LogisticRegression().fit(X_train_scaled, y_train)
+y_pred = model.predict(X_test_scaled)
+```
+
+A pegadinha: `fit` retorna `self`. Permite encadear: `model = LogisticRegression().fit(X, y).predict(X_new)` em uma linha. Pequeno detalhe que vira fluência.
+
+## Pipeline: composição como cidadã de primeira classe
+
+A grande sacada do sklearn não é a API individual — é o que ela permite **compor**. Como todo transformer tem `fit/transform` e todo estimator tem `fit/predict`, dá pra encaixar uma cadeia inteira num único objeto que **também tem fit/predict**:
+
+```python
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+
+pipe = Pipeline([
+    ('impute', SimpleImputer(strategy='median')),
+    ('scale', StandardScaler()),
+    ('model', LogisticRegression()),
+])
+
+pipe.fit(X_train, y_train)
+pipe.predict(X_test)
+```
+
+Esse `pipe` é um objeto único do ponto de vista do código consumidor — mas internamente faz três passos. Por quê isso importa?
+
+- **Evita data leak.** Se você normaliza `X_train + X_test` antes do split, vaza estatística do teste pra etapa de treino. O Pipeline força a ordem certa: `fit` só toca os dados de treino; depois `transform(X_test)` usa parâmetros já aprendidos.
+- **Replica em produção.** Você salva o `pipe` inteiro com `joblib.dump`, carrega em outro ambiente, e os mesmos passos rodam exatamente como em treino.
+- **Otimização conjunta.** Combina com `GridSearchCV` pra tunar hiperparâmetros de **todas** as etapas ao mesmo tempo (`'impute__strategy'`, `'model__C'`, etc., usando o `__` como separador).
+
+## GridSearchCV: o wrapper como padrão
+
+Como toda classe do sklearn segue a mesma interface, dá pra envolver qualquer estimator num **outro** estimator que faz busca de hiperparâmetros, validação cruzada, calibração, ensemble — sem o estimator original saber:
+
+```python
+from sklearn.model_selection import GridSearchCV
+
+search = GridSearchCV(
+    pipe,
+    param_grid={
+        'impute__strategy': ['mean', 'median'],
+        'model__C': [0.01, 0.1, 1, 10],
+    },
+    cv=5,
+)
+search.fit(X_train, y_train)
+print(search.best_params_, search.best_score_)
+```
+
+`search` ainda tem `fit/predict`. Você pode envolver `search` dentro de outro `Pipeline`. Pode envolver esse `Pipeline` num `VotingClassifier`. Cada camada respeita o contrato. **Composição infinita** pelo simples acordo de método.
+
+## Por que XGBoost, LightGBM e CatBoost adotaram
+
+Quando o gradient boosting moderno surgiu (XGBoost em 2014), os autores fizeram uma escolha de design importante: oferecer **dois entrypoints**. Um nativo (otimizado, com features avançadas) e um wrapper que segue a API do sklearn (`XGBClassifier`, `XGBRegressor`).
+
+```python
+from xgboost import XGBClassifier
+
+pipe = Pipeline([
+    ('impute', SimpleImputer()),
+    ('model', XGBClassifier(n_estimators=200)),
+])
+pipe.fit(X_train, y_train)
+```
+
+Isso não é educadinho — é estratégico. Permite que XGBoost se encaixe **gratuitamente** em todo o ecossistema de tooling que já existia: validação cruzada, busca de hiperparâmetro, persistência, métricas, dashboards. Quem fizer um lib novo de ML hoje e ignorar esse padrão paga o preço de não se integrar a nada.
+
+Até **Keras** (deep learning) tem `KerasClassifier` wrapper. **AutoML** moderno (TPOT, AutoGluon, Optuna) fala fit/predict como interface principal. Bibliotecas de dados sintéticos, de feature engineering automático, de fairness analysis — todas falam o mesmo dialeto.
+
+## Extensibilidade
+
+Pra criar seu próprio transformer ou estimator, basta herdar de `BaseEstimator` + `TransformerMixin` (ou `ClassifierMixin` / `RegressorMixin`):
+
+```python
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class LogTransform(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        return self  # sem estado
+    def transform(self, X):
+        return np.log1p(X)
+```
+
+Pronto: esse `LogTransform` agora encaixa em Pipeline, em GridSearch, em FeatureUnion. Sem nenhum código extra de plumbing — só seguir o contrato.
+
+## O que aprender disso, mesmo se você nunca usar sklearn
+
+A lição de design vai além de ML. **Uma interface mínima e composicional vence interfaces "completas" toda vez.** O sklearn não tentou prever todos os casos — definiu fit/predict/transform e deixou a composição emergir.
+
+Frameworks que tentam definir 50 verbos pra cobrir todas as situações acabam impedindo composição: cada peça nova precisa lidar com 50 maneiras de ser chamada. Frameworks que escolhem 2-3 verbos universais e exigem que tudo respeite forçam o ecossistema a evoluir em torno desse contrato.
+
+Se você está desenhando uma API hoje — biblioteca, plugin system, microsserviço — vale gastar uma tarde lendo `sklearn.base` e `sklearn.pipeline`. Não pelo ML. Pela lição de **como uma interface bem desenhada resiste 20 anos sem precisar mudar muito**.
