@@ -51,7 +51,7 @@ export function Nav({ lang }: { lang: Locale }) {
               background: 'linear-gradient(135deg, var(--text), var(--text-muted))',
             }}
           />
-          <span className="font-semibold text-[15px]">marcos medeiros</span>
+          <span className="font-semibold text-[15px]">marcos.run</span>
           <span className="font-mono text-[10px] px-1.5 py-0.5 border border-[var(--border)] rounded text-[var(--text-muted)] tracking-wide">
             v2.0
           </span>

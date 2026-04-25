@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const title = searchParams.get('title') ?? 'marcos medeiros';
+  const title = searchParams.get('title') ?? 'marcos.run';
   const tag = searchParams.get('tag') ?? '';
 
   // Dev Premium dark palette
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
             color: 'rgba(237,237,237,0.55)',
           }}
         >
-          marcos medeiros
+          marcos.run
         </div>
         <div
           style={{
