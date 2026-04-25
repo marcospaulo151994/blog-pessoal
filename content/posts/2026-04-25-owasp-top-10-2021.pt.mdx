@@ -1,0 +1,106 @@
+---
+translationKey: "owasp-top-10-2021"
+slug: "owasp-top-10-2021"
+lang: "pt"
+title: "OWASP Top 10: o checklist que todo dev devia revisar antes de cada release"
+description: "As 10 categorias de vulnerabilidade web mais críticas — explicadas com exemplo concreto e mitigação direta pra cada uma."
+date: 2026-04-25
+tags: ["owasp", "seguranca", "vulnerabilidades", "web"]
+status: "published"
+---
+
+OWASP Top 10 é a lista de vulnerabilidades mais críticas em aplicações web mantida pela [Open Web Application Security Project](https://owasp.org). É revisada a cada 3-4 anos a partir de dados reais de bug bounty, pentest e CVEs públicos. A versão atual é a de 2021 — ainda referência em 2026 — com 10 categorias ordenadas por impacto e prevalência.
+
+Vale revisar a lista antes de cada release. Não é exaustiva, mas cobre o que tipicamente derruba aplicação em produção.
+
+## A1 — Broken Access Control
+
+A vulnerabilidade #1 em prevalência. Acontece quando o servidor confia que o usuário só vai pedir o que tem permissão.
+
+**Exemplo:** `/api/users/42/orders` retorna pedidos sem checar se o usuário logado é o user 42. Subindo o ID na URL, o atacante vê pedidos dos outros — *Insecure Direct Object Reference (IDOR)*.
+
+**Mitigação:** verifica permissão **dentro** do handler do endpoint, não só na rota. Use middleware de autorização e nunca confia em parâmetro de URL como prova de identidade.
+
+## A2 — Cryptographic Failures
+
+Antes "Sensitive Data Exposure". Cobre dados sensíveis em texto claro, criptografia fraca (MD5, SHA1 pra senha), TLS mal configurado.
+
+**Exemplo:** banco com `senha` em plaintext. Vazamento da tabela = todas as senhas comprometidas. Ou app que aceita TLS 1.0/1.1 (deprecated).
+
+**Mitigação:** **Argon2id** ou bcrypt pra senha (nunca MD5/SHA). TLS 1.2+ obrigatório, HSTS habilitado. Dados sensíveis criptografados at rest com chaves geridas (KMS, Vault).
+
+## A3 — Injection
+
+SQL injection é a fama, mas inclui também NoSQL, OS command, LDAP, expressões. Acontece quando entrada do usuário vai concatenada em algum interpretador.
+
+**Exemplo:** `db.query("SELECT * FROM users WHERE name = '" + name + "'")`. Atacante envia `name = "'; DROP TABLE users;--"` e o ORM dispara duas queries.
+
+**Mitigação:** **prepared statements / parametrização** — sempre. Em ORMs modernos isso é o default; cuidado quando você sair do ORM e escrever SQL cru. Validar input no formato esperado (regex, schema) é defesa em profundidade, não substituto de parametrização.
+
+## A4 — Insecure Design
+
+Categoria nova em 2021 — captura erros de **arquitetura**, não de implementação. Não tem patch pra design ruim.
+
+**Exemplo:** sistema permite recuperação de senha só com data de nascimento + nome da mãe. Mesmo o código sendo perfeito, o design é vulnerável a engenharia social.
+
+**Mitigação:** threat modeling antes de implementar. Pergunta "quem ataca isso e como?" no design, não na revisão de PR. STRIDE é o framework clássico.
+
+## A5 — Security Misconfiguration
+
+Configuração default insegura, banners verbose, headers HTTP ausentes, dependências expostas.
+
+**Exemplo:** `/admin` acessível por qualquer IP. `Server: nginx/1.14.0` no header (banner que entrega versão pro atacante mapear CVEs). Mensagem de erro com stack trace completo em produção.
+
+**Mitigação:** harden por default. Headers obrigatórios em qualquer aplicação web em 2026: `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`. Desliga stack trace em prod. Audita porta aberta a cada release.
+
+## A6 — Vulnerable and Outdated Components
+
+90% das aplicações modernas são feitas de dependências. Se uma delas tem CVE público, sua aplicação tem.
+
+**Exemplo:** projeto com `lodash@4.17.4` (CVE-2019-10744). Atualizar pra `4.17.21` resolve. Mas se ninguém olha o `npm audit` ou Dependabot, fica lá pra sempre.
+
+**Mitigação:** **Dependabot** (ou Renovate) ativado, com PRs automáticos pra patches. SBOM gerado a cada build pra rastrear o que tem em produção. `npm audit --production` no CI bloqueia merge com vulnerabilidade alta.
+
+## A7 — Identification and Authentication Failures
+
+Login fraco: senhas curtas permitidas, sem rate limit em login, session ID previsível, sem timeout.
+
+**Exemplo:** endpoint `/login` aceita 1000 tentativas/segundo de um único IP. Ataque de brute force descobre senhas fracas em minutos.
+
+**Mitigação:** rate limit por IP **e** por user (atacante distribui IPs). MFA obrigatório pra contas administrativas. Senhas via **passkeys** quando possível, ou no mínimo senhas longas (≥12 chars) com checagem contra **HaveIBeenPwned**.
+
+## A8 — Software and Data Integrity Failures
+
+Pipeline de build aceita código de fonte não-verificada. Update automático sem checksum. Deserialização insegura de payloads não-confiáveis.
+
+**Exemplo:** CI/CD que baixa scripts de URL externa via `curl | sh` sem checksum. URL é comprometida, novo build sai com backdoor.
+
+**Mitigação:** assinatura de artefatos (cosign, Sigstore). Lockfiles commitados (`pnpm-lock.yaml`, `package-lock.json`). Evite formatos de serialização que executam código (formatos binários inseguros) quando o payload vem de fonte externa — prefira JSON com schema validado.
+
+## A9 — Security Logging and Monitoring Failures
+
+Você foi atacado e ninguém sabe. Falta de log estruturado, retenção curta, ausência de alerta.
+
+**Exemplo:** múltiplas falhas de login não disparam alerta. Atacante itera por horas, encontra credencial válida, e o evento só é notado quando o cliente reporta saque indevido.
+
+**Mitigação:** log estruturado (JSON, com `user_id`, `ip`, `action`, `result`). Retenção mínima de 90 dias pra eventos de segurança. Alertas em padrões críticos (brute force, escalação de privilégio, exportação massiva). Importante: sem violar a LGPD — log estruturado **não inclui PII desnecessária**.
+
+## A10 — Server-Side Request Forgery (SSRF)
+
+Aplicação aceita URL como input e busca recurso. Atacante envia URL interna (ex: `http://169.254.169.254` em AWS) e exfiltra metadados/credenciais.
+
+**Exemplo:** endpoint `/preview?url=...` busca a URL pra gerar preview. Atacante envia URL do metadata da cloud e ganha credenciais IAM.
+
+**Mitigação:** allowlist de domínios permitidos. Bloqueio de IPs privados (10.x, 172.16.x, 192.168.x, 169.254.x). Cuidado com redirect — fetch que segue 302 pode acabar em IP interno mesmo com URL inicial pública.
+
+## Conclusão
+
+OWASP Top 10 é o piso, não o teto. Cobre o que tipicamente derruba app em produção, mas não substitui pentest, code review com foco em segurança, ou modelagem de ameaça por feature crítica.
+
+Pra dev solo ou time pequeno, a regra prática que funciona:
+- A2 (cripto) e A6 (deps) — automatizar com tooling (HSTS no header, Dependabot ativo)
+- A1 (acesso), A3 (injection) e A7 (auth) — checklist em PR
+- A4 (design) — threat modeling antes de implementar feature crítica
+- A9 (logging) — review trimestral
+
+E reler a lista a cada release nova. A versão 2025 já está sendo discutida pela OWASP — vale acompanhar.
