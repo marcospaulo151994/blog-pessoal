@@ -12,6 +12,7 @@ export const PATHS = {
   sobre: { pt: 'sobre', en: 'about' },
   tags: { pt: 'tags', en: 'tags' },
   newsletter: { pt: 'newsletter', en: 'newsletter' },
+  now: { pt: 'agora', en: 'now' },
 } as const;
 
 type PathKey = keyof typeof PATHS;

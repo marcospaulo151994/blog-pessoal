@@ -1,10 +1,7 @@
 import Link from 'next/link';
 import { PATHS, type Locale } from '@/lib/i18n';
+import { shortDate } from '@/lib/format';
 
-// NOTE: stub created in Task 21 so the home page compiles before Task 19 lands.
-// Task 19 will replace this with the proper implementation (maturity icon,
-// planted/tended dates, tag list). Keep the prop signature stable so that
-// swap-in is mechanical.
 interface NoteCardProps {
   slug: string;
   title: string;
@@ -13,21 +10,29 @@ interface NoteCardProps {
   lang: Locale;
 }
 
+const maturityIcon: Record<NoteCardProps['maturity'], string> = {
+  seedling: '🌱',
+  budding: '🌿',
+  evergreen: '🌳',
+};
+
 export function NoteCard({ slug, title, maturity, planted, lang }: NoteCardProps) {
-  const dateLabel = planted.toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  const dateLabel = shortDate(planted, lang);
+  const href = `/${lang}/${PATHS.notas[lang]}/${slug}`;
+
   return (
-    <article className="py-4 border-b border-[var(--border)] last:border-0">
-      <h3 className="text-lg font-semibold tracking-tight">
-        <Link href={`/${lang}/${PATHS.notas[lang]}/${slug}`}>{title}</Link>
-      </h3>
-      <div className="mt-1 text-xs text-[var(--text-muted)]">
-        <span>{maturity}</span>
-        <span> · {dateLabel}</span>
+    <Link href={href} className="block border-b border-[var(--border)] last:border-0">
+      <div className="dp-row grid items-center gap-4 px-3 py-3.5 -mx-3 grid-cols-[28px_60px_1fr]">
+        <span aria-hidden style={{ fontSize: '1.1em' }}>
+          {maturityIcon[maturity]}
+        </span>
+        <span className="dp-row-date font-mono text-[11px] text-[var(--text-muted)] tracking-[0.5px]">
+          {dateLabel}
+        </span>
+        <span className="text-[15px] font-medium text-[var(--text)] truncate">
+          {title}
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }

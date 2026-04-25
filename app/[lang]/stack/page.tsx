@@ -28,31 +28,29 @@ export async function generateMetadata({
 const copy = {
   pt: {
     title: 'Stack',
-    intro:
-      'Ferramentas, linguagens e tecnologias que uso no dia-a-dia. Em construção — vou preenchendo conforme penso no que entra.',
+    intro: 'ferramentas, linguagens e tecnologias que uso no dia-a-dia.',
     sections: {
-      languages: 'Linguagens & runtimes',
-      ides: 'Editores & IDEs',
-      ml: 'ML & data science',
-      frontend: 'Frontend & web',
-      hardware: 'Hardware',
-      tools: 'Outras ferramentas',
+      languages: 'linguagens & runtimes',
+      ides: 'editores & ides',
+      ml: 'ml & data science',
+      frontend: 'frontend & web',
+      hardware: 'hardware',
+      tools: 'outras ferramentas',
     },
-    placeholder: 'Em construção.',
+    placeholder: 'em construção.',
   },
   en: {
     title: 'Stack',
-    intro:
-      'Tools, languages, and technology I use daily. Work in progress — filling in as I think of what belongs here.',
+    intro: 'tools, languages, and technology I use daily.',
     sections: {
-      languages: 'Languages & runtimes',
-      ides: 'Editors & IDEs',
-      ml: 'ML & data science',
-      frontend: 'Frontend & web',
-      hardware: 'Hardware',
-      tools: 'Other tools',
+      languages: 'languages & runtimes',
+      ides: 'editors & ides',
+      ml: 'ml & data science',
+      frontend: 'frontend & web',
+      hardware: 'hardware',
+      tools: 'other tools',
     },
-    placeholder: 'Under construction.',
+    placeholder: 'under construction.',
   },
 } as const;
 
@@ -76,14 +74,31 @@ export default async function StackPage({
   ];
 
   return (
-    <main className="max-w-[760px] mx-auto px-4 py-10">
-      <h1 className="text-4xl font-semibold tracking-tight">{t.title}</h1>
-      <p className="mt-3 text-[var(--text-muted)]">{t.intro}</p>
+    <main className="max-w-[760px] mx-auto px-8 py-16">
+      <h1
+        className="font-semibold tracking-tight"
+        style={{ fontSize: 40, letterSpacing: '-1.5px' }}
+      >
+        {t.title}
+      </h1>
+      <p
+        className="mt-4 text-[var(--text-muted)]"
+        style={{ fontSize: 17, lineHeight: 1.6 }}
+      >
+        {t.intro}
+      </p>
 
       {sectionOrder.map((key) => (
         <section key={key} className="mt-10">
-          <h2 className="text-2xl font-semibold mb-3 tracking-tight">{t.sections[key]}</h2>
-          <p className="text-[var(--text-muted)] italic">{t.placeholder}</p>
+          <div className="font-mono text-[11px] uppercase tracking-[1px] text-[var(--text-muted)] mb-3">
+            {t.sections[key]}
+          </div>
+          <p
+            className="text-[var(--text-muted)] italic"
+            style={{ fontSize: 14, lineHeight: 1.6 }}
+          >
+            {t.placeholder}
+          </p>
         </section>
       ))}
     </main>

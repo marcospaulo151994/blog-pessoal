@@ -13,6 +13,7 @@ const labels = {
     projetos: 'Projetos',
     notas: 'Notas',
     stack: 'Stack',
+    now: 'Now',
     sobre: 'Sobre',
   },
   en: {
@@ -20,12 +21,13 @@ const labels = {
     projetos: 'Projects',
     notas: 'Notes',
     stack: 'Stack',
+    now: 'Now',
     sobre: 'About',
   },
 } as const;
 
 type NavKey = keyof typeof labels.pt;
-const navOrder: readonly NavKey[] = ['posts', 'projetos', 'notas', 'stack', 'sobre'];
+const navOrder: readonly NavKey[] = ['posts', 'projetos', 'notas', 'stack', 'now', 'sobre'];
 
 export function Nav({ lang }: { lang: Locale }) {
   const t = labels[lang];
