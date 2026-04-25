@@ -3,14 +3,14 @@ import { PATHS, type Locale } from '@/lib/i18n';
 
 const copy = {
   pt: {
-    line1: 'Olá. Escrevo sobre visão computacional,',
-    line2: 'machine learning e o que aprendo no meu TCC.',
+    line1: 'Olá. Bem vindo ao meu quintal digital!',
+    line2: 'Aqui nada faz sentido, sinta-se à vontade para explorar.',
     cta1: 'Ler posts →',
     cta2: 'Ver projetos →',
   },
   en: {
-    line1: 'Hi. I write about computer vision,',
-    line2: 'machine learning, and what I learn during my thesis.',
+    line1: 'Hello. Welcome to my digital garden!',
+    line2: 'Everything is nonsense in here, feel free to explore.',
     cta1: 'Read posts →',
     cta2: 'See projects →',
   },
