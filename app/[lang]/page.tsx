@@ -1,21 +1,20 @@
-import type { Locale } from '@/lib/i18n';
+import { notFound } from 'next/navigation';
+import { isLocale, type Locale } from '@/lib/i18n';
+import { Hero } from '@/components/home/Hero';
+import { RecentPosts } from '@/components/home/RecentPosts';
+import { FeaturedProjects } from '@/components/home/FeaturedProjects';
+import { GardenPeek } from '@/components/home/GardenPeek';
 
-const copy = {
-  pt: { hello: 'Olá', placeholder: 'Em breve, conteúdo aqui.' },
-  en: { hello: 'Hello', placeholder: 'Content coming soon.' },
-} as const;
-
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ lang: Locale }>;
-}) {
+export default async function Home({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
-  const t = copy[lang];
+  if (!isLocale(lang)) notFound();
+  const l = lang as Locale;
   return (
-    <main className="p-8">
-      <h1 className="text-4xl font-bold">{t.hello}</h1>
-      <p className="mt-4">{t.placeholder}</p>
+    <main className="max-w-[800px] mx-auto px-4">
+      <Hero lang={l} />
+      <RecentPosts lang={l} />
+      <FeaturedProjects lang={l} />
+      <GardenPeek lang={l} />
     </main>
   );
 }
