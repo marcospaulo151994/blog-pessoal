@@ -6,9 +6,9 @@ import { buildMetadata } from '@/lib/metadata';
 const copy = {
   pt: {
     title: 'Sobre',
-    description: 'Sobre Marcos Medeiros — UPF, ML e visão computacional.',
+    description: 'Sobre Marcos Paulo de Medeiros — UPF, ML e visão computacional.',
     paragraphs: [
-      'marcos paulo medeiros. estudante de ciência da computação na upf, terminando o tcc sobre predição de direção de pênaltis com mediapipe pose + ml clássico/profundo.',
+      'marcos paulo de medeiros. estudante de ciência da computação na upf, terminando o tcc sobre predição de direção de pênaltis com mediapipe pose + ml clássico/profundo.',
       'interesses giram em torno de visão computacional, machine learning aplicado a esportes e segurança de software. escrevo aqui pra fixar o que estudo e abrir conversa sobre o que faço.',
       'fora do código: futebol (claro), café e tentativa eterna de manter um sono decente.',
     ],
@@ -38,9 +38,9 @@ const copy = {
   },
   en: {
     title: 'About',
-    description: 'About Marcos Medeiros — UPF, ML, and computer vision.',
+    description: 'About Marcos Paulo de Medeiros — UPF, ML, and computer vision.',
     paragraphs: [
-      'marcos paulo medeiros. computer science undergrad at upf, wrapping up my thesis on penalty-direction prediction using mediapipe pose + classical/deep ml.',
+      'marcos paulo de medeiros. computer science undergrad at upf, wrapping up my thesis on penalty-direction prediction using mediapipe pose + classical/deep ml.',
       'interests revolve around computer vision, machine learning applied to sports, and software security. i write here to crystallize what i study and start conversations about what i build.',
       'outside code: football (of course), coffee, and the eternal attempt to keep a decent sleep schedule.',
     ],

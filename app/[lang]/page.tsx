@@ -10,11 +10,11 @@ import { PostRow } from '@/components/ui/PostRow';
 const copy = {
   pt: {
     title: 'marcos.run',
-    description: 'Posts, projetos e notas sobre ML e visão computacional — Marcos Medeiros.',
+    description: 'Posts, projetos e notas sobre ML e visão computacional — Marcos Paulo de Medeiros.',
     statusPill: 'escrevendo agora',
     headlineLine1: 'notas técnicas, projetos pessoais',
     headlineLine2: 'e o que estou aprendendo agora.',
-    subtitle: 'blog pessoal de marcos medeiros — visão computacional, ml, segurança.',
+    subtitle: 'blog pessoal de marcos paulo de medeiros — visão computacional, ml, segurança.',
     ctaPrimary: 'ler último ensaio',
     ctaSecondary: 'ver arquivo',
     featuredFlag: 'em destaque',
@@ -25,11 +25,11 @@ const copy = {
   },
   en: {
     title: 'marcos.run',
-    description: 'Posts, projects, and notes on ML and computer vision — Marcos Medeiros.',
+    description: 'Posts, projects, and notes on ML and computer vision — Marcos Paulo de Medeiros.',
     statusPill: 'writing now',
     headlineLine1: 'technical notes, personal projects,',
     headlineLine2: "and what I'm learning right now.",
-    subtitle: 'personal blog by marcos medeiros — computer vision, ml, security.',
+    subtitle: 'personal blog by marcos paulo de medeiros — computer vision, ml, security.',
     ctaPrimary: 'read latest essay',
     ctaSecondary: 'see archive',
     featuredFlag: 'featured',

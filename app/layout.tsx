@@ -18,7 +18,7 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'marcos.run',
-  description: 'Posts, projetos e notas sobre ML e visão computacional — Marcos Medeiros.',
+  description: 'Posts, projetos e notas sobre ML e visão computacional — Marcos Paulo de Medeiros.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,6 +1,6 @@
 # marcos.run
 
-Site pessoal de Marcos Medeiros, em Next.js 16. [Ver em produção](https://blog-pessoal-silk-nine.vercel.app/pt) — domínio `marcos.run` planejado.
+Site pessoal de Marcos Paulo de Medeiros, em Next.js 16. [Ver em produção](https://blog-pessoal-silk-nine.vercel.app/pt) — domínio `marcos.run` planejado.
 
 ## Stack
 
