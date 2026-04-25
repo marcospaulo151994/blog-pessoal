@@ -395,6 +395,20 @@ Fora do plan original — autor decidiu adicionar mais conteúdo enquanto Task 1
 
 **Estado:** 4 posts em produção (`mediapipe-pose-landmarks`, `lgpd-em-5-minutos`, `owasp-top-10-2021`, `scikit-learn-a-api-do-ml`), 14+ tag routes prerendered.
 
+### Mudanças avulsas (2026-04-25, fora do plan)
+
+**`2a53a87 docs: add post template`** — `content/posts/_TEMPLATE.pt.mdx.example` com frontmatter comentado (todos os campos com TODO + explicação) e exemplo de uso de `<Callout>`, `<Figure>`, `<VideoEmbed>`. Extensão `.example` evita match com content-collections include pattern. Autor copia o template ao criar novos posts manualmente.
+
+**`8b7e277 feat(brand): rename display to marcos.run`** — branding do site atualizado:
+- Nav: "Marcos Medeiros" (font-serif) → "marcos.run" (font-mono — vibe URL/código)
+- `app/layout.tsx` metadata: `title: 'marcos.run'`, description com créditos ao autor
+- `README.md`: heading `# marcos.run` + nota sobre domínio futuro
+- Domínio `marcos.run` ainda não comprado — autor pretende adquirir depois.
+
+**`5d68066 feat(stack): add placeholder /stack page`** — página `/pt/stack` e `/en/stack` (mesmo segmento, "stack" é termo universal). 6 seções placeholder ("Linguagens & runtimes", "Editores & IDEs", "ML & data science", "Frontend & web", "Hardware", "Outras ferramentas") cada uma com "Em construção" em italic. Autor preencherá com ferramentas reais. Nav ganhou link "Stack" entre Notas e Sobre. `lib/i18n.ts` PATHS atualizado.
+
+**Painel admin (Decap CMS / TinaCMS):** adiado pra v0.2+. Recomendação registrada: avaliar quando houver 6-8 posts publicados consistentemente.
+
 
 
 
