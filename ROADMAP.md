@@ -3,6 +3,10 @@
 ## v0.1 — MVP em construção
 Ver `docs/superpowers/plans/2026-04-24-blog-pessoal.md`.
 
+### Domínio
+- [ ] Comprar `marcosmedeiros.dev` (Cloudflare Registrar, ~$12/ano) e migrar do `vercel.app`
+- [ ] **05-26/12/2026:** ativar backorder de `marcos.run` em SnapNames + NameJet (vence 06/10/2026, drop esperado ~26/12 após grace + redemption periods). Cap de leilão: definir antes de ativar (sugestão: $300).
+
 ## v0.2 — "Loop social"
 - [ ] Giscus comments (ativar stub `<PostComments />`)
 - [ ] Newsletter embed (Buttondown trial grátis)

@@ -561,6 +561,18 @@ _Iniciada e (quase) concluída em 2026-04-25. Task 29 (sobre real) aguarda conte
 - CSS keyframes pra page transition (cortar ~44KB gz do bundle)
 - hreflang `<xhtml:link>` no sitemap (atualmente o MetadataRoute.Sitemap não suporta nativamente)
 
+## Decisão de domínio (2026-04-25)
+
+`marcos.run` está registrado (NS em Regway, A record `77.110.124.53` — provável parking de domain investor). Vence em **06/10/2026**.
+
+**Estratégia escolhida: caminho (B)**:
+1. Comprar `marcosmedeiros.dev` agora (backup, ~$12/ano Cloudflare Registrar) e usar como domínio canônico.
+2. Em ~05-26/12/2026 (após grace period + redemption period do `.run`), ativar backorder de `marcos.run` em dropcatchers. Se cair e for pego (ou ganhar leilão com cap definido), migrar; se renovar, fica no `.dev`.
+
+**Aguardando compra do `.dev` por parte do autor antes de fazer rebrand de "marcos.run" → "marcosmedeiros.dev".**
+
+**Alternativas avaliadas:** todas `.run` curtas (`marcos.run`, `mp.run`, `marco.run`) registradas. `marcos.dev`, `marcosmedeiros.com`, `marcos.codes`, `marcos.me` registrados. `marcosmedeiros.run`, `marcosmedeiros.dev`, `marcospm.dev`, etc. disponíveis (validado via DNS lookup; user confirma no registrar antes de comprar).
+
 
 
 
