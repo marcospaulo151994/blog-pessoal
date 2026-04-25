@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { ThemeToggle } from './ThemeToggle';
+import { SearchTrigger } from '@/components/ui/SearchTrigger';
 import { PATHS, type Locale } from '@/lib/i18n';
 
 const labels = {
@@ -22,6 +23,7 @@ export function Nav({ lang }: { lang: Locale }) {
         <Link href={`/${lang}/${PATHS.stack[lang]}`}>{t.stack}</Link>
         <Link href={`/${lang}/${PATHS.sobre[lang]}`}>{t.sobre}</Link>
         <LanguageSwitcher currentLang={lang} />
+        <SearchTrigger lang={lang} />
         <ThemeToggle />
       </div>
     </nav>
