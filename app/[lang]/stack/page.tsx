@@ -1,5 +1,29 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { isLocale, type Locale } from '@/lib/i18n';
+import { isLocale, PATHS, type Locale } from '@/lib/i18n';
+import { buildMetadata } from '@/lib/metadata';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const description =
+    lang === 'pt'
+      ? 'Ferramentas, linguagens e tecnologias que uso no dia-a-dia.'
+      : 'Tools, languages, and technology I use daily.';
+  return buildMetadata({
+    title: 'Stack',
+    description,
+    path: `/${lang}/${PATHS.stack[lang]}`,
+    alternatePaths: {
+      pt: `/pt/${PATHS.stack.pt}`,
+      en: `/en/${PATHS.stack.en}`,
+    },
+  });
+}
 
 const copy = {
   pt: {
