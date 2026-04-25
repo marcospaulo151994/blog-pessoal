@@ -8,6 +8,7 @@ export const PATHS = {
   projetos: { pt: 'projetos', en: 'projects' },
   posts: { pt: 'posts', en: 'posts' },
   notas: { pt: 'notas', en: 'notes' },
+  stack: { pt: 'stack', en: 'stack' },
   sobre: { pt: 'sobre', en: 'about' },
   tags: { pt: 'tags', en: 'tags' },
 } as const;

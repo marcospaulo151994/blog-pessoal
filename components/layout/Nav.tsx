@@ -4,8 +4,8 @@ import { ThemeToggle } from './ThemeToggle';
 import { PATHS, type Locale } from '@/lib/i18n';
 
 const labels = {
-  pt: { posts: 'Posts', projetos: 'Projetos', notas: 'Notas', sobre: 'Sobre' },
-  en: { posts: 'Posts', projetos: 'Projects', notas: 'Notes', sobre: 'About' },
+  pt: { posts: 'Posts', projetos: 'Projetos', notas: 'Notas', stack: 'Stack', sobre: 'Sobre' },
+  en: { posts: 'Posts', projetos: 'Projects', notas: 'Notes', stack: 'Stack', sobre: 'About' },
 } as const;
 
 export function Nav({ lang }: { lang: Locale }) {
@@ -19,6 +19,7 @@ export function Nav({ lang }: { lang: Locale }) {
         <Link href={`/${lang}/${PATHS.posts[lang]}`}>{t.posts}</Link>
         <Link href={`/${lang}/${PATHS.projetos[lang]}`}>{t.projetos}</Link>
         <Link href={`/${lang}/${PATHS.notas[lang]}`}>{t.notas}</Link>
+        <Link href={`/${lang}/${PATHS.stack[lang]}`}>{t.stack}</Link>
         <Link href={`/${lang}/${PATHS.sobre[lang]}`}>{t.sobre}</Link>
         <LanguageSwitcher currentLang={lang} />
         <ThemeToggle />
