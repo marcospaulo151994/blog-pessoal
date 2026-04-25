@@ -381,6 +381,18 @@ Zero rotas en (não há posts en ainda). Clicar em qualquer TagPill do post Medi
 
 **Reviews:** verbatim do plan.
 
+### Posts adicionais (2026-04-25)
+
+Fora do plan original — autor decidiu adicionar mais conteúdo enquanto Task 18 e 19 aguardam (projeto TCC + notas do garden precisam de input do autor).
+
+**Posts publicados:**
+- `cbab6c4 content: add LGPD em 5 minutos pra dev` — `/pt/posts/lgpd-em-5-minutos` (~880 palavras). 7 conceitos LGPD (bases legais → multas) + 7 mudanças concretas no código.
+- `69c610e content: add OWASP Top 10 review post` — `/pt/posts/owasp-top-10-2021` (~950 palavras). Lista das 10 categorias de 2021 com exemplo + mitigação direta cada.
+
+**Post rascunhado e rejeitado:** "Quando NÃO usar deep learning" (sklearn vs DL pra tabular). Removido antes de commit. Autor pode pedir reescrita ou abandonar.
+
+**Estado:** 3 posts em produção (`mediapipe-pose-landmarks`, `lgpd-em-5-minutos`, `owasp-top-10-2021`), 12+ tag routes prerendered.
+
 
 
 
