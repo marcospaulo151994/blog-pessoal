@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { isLocale, type Locale } from '@/lib/i18n';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
+import { PageTransition } from '@/components/layout/PageTransition';
 
 export function generateStaticParams() {
   return [{ lang: 'pt' }, { lang: 'en' }];
@@ -21,7 +22,7 @@ export default async function LangLayout({
   return (
     <div data-lang={lang} className="min-h-screen flex flex-col">
       <Nav lang={lang as Locale} />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1"><PageTransition>{children}</PageTransition></div>
       <Footer lang={lang as Locale} />
     </div>
   );
