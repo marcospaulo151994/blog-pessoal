@@ -4,6 +4,9 @@ import { isLocale, type Locale } from '@/lib/i18n';
 import { MDXContent } from '@/components/mdx/MDXContent';
 import { TagPill } from '@/components/ui/TagPill';
 import { PostComments } from '@/components/ui/PostComments';
+import { ShareButtons } from '@/components/ui/ShareButtons';
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://blog-pessoal-silk-nine.vercel.app';
 
 export async function generateStaticParams() {
   const ptPosts = getPosts({ lang: 'pt' });
@@ -50,7 +53,12 @@ export default async function PostPage({
       <div className="prose-content">
         <MDXContent code={post.body} />
       </div>
-      <footer className="mt-16 pt-8 border-t border-[var(--border)]">
+      <footer className="mt-16 pt-8 border-t border-[var(--border)] space-y-6">
+        <ShareButtons
+          url={`${SITE}/${lang}/posts/${post.slug}`}
+          title={post.title}
+          lang={lang as Locale}
+        />
         <PostComments postId={post.translationKey} />
       </footer>
     </article>
