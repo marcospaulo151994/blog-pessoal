@@ -21,9 +21,9 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>marcos.run — Blog</title>
+    <title>marcos medeiros — blog</title>
     <link>${SITE}/pt</link>
-    <description>Posts sobre ML, visão computacional e segurança.</description>
+    <description>notas técnicas, projetos pessoais e o que estou aprendendo agora.</description>
     <language>pt-BR</language>
     ${items}
   </channel>

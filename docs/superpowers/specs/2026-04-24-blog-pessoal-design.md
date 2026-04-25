@@ -4,6 +4,8 @@
 **Autor:** Marcos Medeiros
 **Status:** Aprovado — pronto pra plano de implementação
 
+> **AMENDMENT 2026-04-25:** Visual direction redesigned to "Dev Premium" (Linear/Vercel/Resend inspired) following an external design handoff. The Peach Noir palette + IBM Plex trio described below were replaced with: dark default, purple accent (#a78bfa dark / #7c3aed light), Inter + JetBrains Mono, gridlines + glow gradient background. Architecture (hybrid: posts + projects + notes + stack + sobre) is preserved. New pages added: /now, /tags index, /newsletter, /404. See `docs/design-handoff/` and `docs/implementation-log.md` "Redesign Dev Premium" section for details.
+
 ---
 
 ## 1. Contexto e motivação

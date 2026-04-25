@@ -573,7 +573,49 @@ _Iniciada e (quase) concluída em 2026-04-25. Task 29 (sobre real) aguarda conte
 
 **Alternativas avaliadas:** todas `.run` curtas (`marcos.run`, `mp.run`, `marco.run`) registradas. `marcos.dev`, `marcosmedeiros.com`, `marcos.codes`, `marcos.me` registrados. `marcosmedeiros.run`, `marcosmedeiros.dev`, `marcospm.dev`, etc. disponíveis (validado via DNS lookup; user confirma no registrar antes de comprar).
 
+---
 
+## Redesign Dev Premium (2026-04-25)
 
+**Decisão (2026-04-25):** o autor recebeu um handoff de design externo — direção visual "Dev Premium" inspirada em Linear / Vercel / Resend (dark default, accent roxo, Inter + JetBrains Mono, glow gradient, gridlines). O handoff foi descompactado em `docs/design-handoff/design_handoff_blog_dev_premium/`. Diante da escolha entre (a) fazer polish incremental sobre o Peach Noir e (b) redesenhar pra Dev Premium, o autor optou por **(b) redesenhar**. Arquitetura (rotas bilíngues, content-collections, MDX pipeline, search ⌘K, RSS, sitemap, OG generator) **preservada**; apenas a camada visual + algumas páginas novas mudaram.
 
+### Fases executadas
+
+| Fase | Commit | Escopo |
+|---|---|---|
+| 0 — Handoff | `313211a` | `docs: add Dev Premium design handoff (zip extracted)` |
+| 1 — Tokens + fontes + dark default | `dac3278` | `feat(redesign): adopt Dev Premium tokens, Inter+JetBrains Mono, dark default` |
+| 2 — Shell (Nav, glow, gridlines, footer) | `98f5578` | `feat(redesign): Dev Premium shell — sticky nav, glow bg, gridlines, footer` |
+| 3 — Home + post detail + archive | `4a544e6` | `feat(redesign): Dev Premium home + post detail + archive` |
+| 4 — Páginas secundárias (/sobre, /agora, /tags, /newsletter, /404, /stack) | `f58bd06` | `feat(redesign): Dev Premium secondary pages` |
+| 5 — Cleanup (OG, RSS, docs, lint) | _este commit_ | OG generator dark, RSS rebrand, fix ⌘K conflict, remove `Reveal.tsx`, README/ROADMAP/spec amendment |
+
+### Mudanças-chave
+
+- **Paleta:** Peach Noir (OKLCH peach + plum) → Dev Premium (dark default `#0a0a0c` bg / `#ededed` text / `#a78bfa` accent; light variant com accent `#7c3aed`).
+- **Fontes:** IBM Plex Serif/Sans/Mono → **Inter + JetBrains Mono** via `next/font/google`. Removida a Plex Serif inteira (display passou a ser Inter weight 700).
+- **Tema default:** sistema invertido — antes light com toggle pro dark; agora **dark default** com toggle pro light. `theme-init.js` ajustado.
+- **Background:** gridlines sutis + radial glow roxo no canto superior — implementado via CSS (`background-image` linear-gradient + repeating-linear-gradient).
+- **Animação:** Framer Motion **removido** inteiro do bundle. Page transitions + reveals trocados por CSS keyframes (`@keyframes fade-up` no globals.css, ~1KB ao invés de ~45KB gz). Arquivo `components/layout/PageTransition.tsx` deletado; stub `components/ui/Reveal.tsx` deletado nesta Fase 5 por estar sem referências.
+- **Componentes novos:** `PostRow.tsx` (linha de archive numerada), `ArchiveList.tsx` (filtro client-side com ⌘K local).
+- **Páginas novas:** `/agora` (now-page), `/tags` (tag index com contagem), `/newsletter` (form stub), `app/not-found.tsx` (404 customizado).
+- **Páginas removidas:** diretório `components/home/` inteiro (`Hero.tsx`, `RecentPosts.tsx`, `FeaturedProjects.tsx`, `GardenPeek.tsx`) — substituído por composição direta dentro de `app/[lang]/page.tsx` no estilo Dev Premium.
+- **OG generator:** repaleta pra dark + brand "marcos medeiros" (lowercase) + glow gradient (`linear-gradient` Satori-friendly, sem multi-bg).
+- **RSS:** título do canal `marcos.run — Blog` → `marcos medeiros — blog` (PT/EN) + descrições refeitas.
+- **⌘K:** conflito entre `ArchiveList` (focus local) e `SearchTrigger` (modal global) resolvido — handler global agora ignora ⌘K se `#archive-search-input` estiver no DOM ou em foco.
+
+### Verificação final (Fase 5)
+
+- `pnpm build` verde, todas as rotas geradas
+- `pnpm test:run` 17/17 verde (testes não foram reescritos — i18n, locale-detect, content)
+- `pnpm lint` sem warnings novos introduzidos pelo redesign
+
+### Roadmap atualizado
+
+- `ROADMAP.md` v0.2: adicionada "Newsletter backend" (form é stub); placeholders de `/sobre`, `/agora`, `/stack` flagados como pendência de conteúdo.
+- v0.3 marcou "CSS keyframes no lugar de Framer Motion" como **done** (já feito no redesign).
+
+### Spec amendment
+
+`docs/superpowers/specs/2026-04-24-blog-pessoal-design.md` ganhou um bloco `> **AMENDMENT 2026-04-25**` no topo registrando que toda a §6 (paleta + tipografia) foi superseded pelo handoff Dev Premium. O resto da spec (arquitetura, modelo de conteúdo, i18n, fases) continua válido como referência histórica.
 

@@ -10,6 +10,10 @@ export function SearchTrigger({ lang }: { lang: Locale }) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        // Skip if archive page already handled it (focus on its input)…
+        if (document.activeElement?.id === 'archive-search-input') return;
+        // …or if the archive search input merely exists on the page (let it own ⌘K).
+        if (document.getElementById('archive-search-input')) return;
         e.preventDefault();
         setOpen(true);
       }
